@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+   <!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-primary">
+    <!-- Container wrapper -->
+    <div class="container-fluid">
+      <!-- Toggle button -->
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-mdb-toggle="collapse"
+        data-mdb-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <i class="fas fa-bars"></i>
+      </button>
+  
+      <!-- Collapsible wrapper -->
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <!-- Navbar brand -->
+        <a class="navbar-brand mt-2 mt-lg-0" >
+            Uji Konsentrasi
+        </a>
+       
+    </div>
+    
+    
+    <!-- Right elements -->
+    <div class="d-flex align-items-center">        
+        {% if 'username' in session %}
+        <div class="navbar-brand me-2 mt-lg-0">
+            {{ session['nama_pegawai'] }}
+        </div>
+        <a class="navbar-brand me-2 mt-lg-0" href="{{ url_for('login') }}">
+            Logout
+        </a>
+        {% endif %}
+    </div>
+      <!-- Right elements -->
+    </div>
+    <!-- Container wrapper -->
+  </nav>
+  <!-- Navbar -->
+      
+  
+<div class="container mt-5">
+    <div class="row"> 
+
+        <!-- Card upload data -->
+
+      <div class="col-md-6" style="width: 436px;">
+            <div class="card" style="width: 360px;">
+                <div class="card text-center">
+                    <div class="card-header">
+                        <h4>Uji Tingkat Konsentrasi</h4>
+                    </div>
+                </div>
+                <div class="card-body">
+
+                    <!-- form login -->
+
+                    <form method="post" enctype="multipart/form-data" action="{{url_for('upload_csv')}}">
+                        <div class="mb-3">
+                            <label for="nip" class="form-label">NIK</label>
+                            <input type="text" class="form-control" id="nip" name="nip" placeholder="Masukkan NIP" pattern="[0-9]{1,8}" title="NIP Harus terdiri dari angka dan maksimal 8 karakter" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nama_pegawai" class="form-label">Nama Pegawai</label>
+                            <input type="text" class="form-control" id="nama_pegawai" name="nama_pegawai" placeholder="Masukkan Nama pegawai"  required> 
+                        </div>
+                        <div class="mb-3">
+                            <label for="departemen" class="from-label">Departemen</label>
+                            <select class="from-select" id="departemen" name="departemen">
+                                <option value="information_technology">Information Technology</option>
+                                <option value="human_capital">Human Capital</option>
+                                <option value="finance">Finance</option>
+                                <option value="general_affair">General Affair</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                          <label for="file" class="from-label">Upload File</label>
+                          <input type="file" class="form-control" id="file" name="csv_file" accept=".csv" required>
+                         
+                        
+                          {% if response_message== 'CSV file uploaded successfully' %}
+                            <small style="color: blue;">
+                              {{response_message}}
+                            </small>
+                            {% else %}
+                            <small style="color: red;">
+                              {{response_message}}
+                            </small>
+                            {% endif %}
+                            
+                            <!-- Display result -->
+                            {% if result %}
+                                <div class="result-container">
+                                    <h4>Result:</h4>
+                                    <p>{{ result }}</p> <!-- Change this to display specific elements of 'result' as needed -->
+                                </div>
+                            {% endif %}
+
+                      </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#messageModal">Uji Sekarang</button>
+                        </div>
+                       
+                  </form>                                                            
+                      
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+
+        <!-- <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="messageModalLabel">Message</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        {% if response_message %}
+                            <p>{{ response_message }}</p>
+                        {% else %}
+                            <p>No message to display.</p>
+                        {% endif %}
+                   
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+
+        <!-- Card Dashboard -->
+         <!-- Card Dashboard -->
+         <div class="col-md-6">
+            <div class="card text-center">
+                <div class="card" style="width: 800px; height: auto;">
+                    <div class="card-header">
+                        <h4>Histori</h4>
+                    </div>
+                    <div class="container mt-3">
+                        <!-- Bagian Pencarian dan Pengurutan -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="searchInput" name="q" placeholder="Kata kunci pencarian">
+                            </div>
+                            
+                            <div class="col-md-3">
+                                <select class="form-select" id="sortSelect">
+                                    <option value="terbaru">Terbaru</option>
+                                    <option value="terlama">Terlama</option>
+                                </select>
+                            </div>
+                           
+
+                            <script>
+                                document.addEventListener("DOMContentLoaded", function() {
+                                    const sortSelect = document.getElementById("sortSelect");
+                                    const tableBody = document.getElementById("tableBody");
+                                
+                                    // Tambahkan event listener untuk perubahan pilihan pengurutan
+                                    sortSelect.addEventListener("change", function() {
+                                        const selectedValue = sortSelect.value;
+                                
+                                        // Ambil semua baris data dari tabel
+                                        const rows = tableBody.querySelectorAll("tr");
+                                
+                                        // Ubah NodeList menjadi Array untuk mengakses metode sort
+                                        const rowsArray = Array.from(rows);
+                                
+                                        // Fungsi pembanding untuk mengurutkan berdasarkan tanggal
+                                        const compareDates = function(rowA, rowB) {
+                                            const dateA = new Date(rowA.cells[4].textContent);
+                                            const dateB = new Date(rowB.cells[4].textContent);
+                                
+                                            if (selectedValue === "terbaru") {
+                                                return dateB - dateA; // Mengurutkan dari terbaru ke terlama
+                                            } else if (selectedValue === "terlama") {
+                                                return dateA - dateB; // Mengurutkan dari terlama ke terbaru
+                                            }
+                                        };
+                                
+                                        // Urutkan array berdasarkan tanggal
+                                        rowsArray.sort(compareDates);
+                                
+                                        // Hapus semua baris dari tabel
+                                        tableBody.innerHTML = "";
+                                
+                                        // Masukkan kembali baris yang sudah diurutkan ke dalam tabel
+                                        rowsArray.forEach(function(row) {
+                                            tableBody.appendChild(row);
+                                        });
+                                    });
+                                });
+                                </script>
+                                
+                        </div>
+                        <!-- Bagian data gelombang otak -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-stripped">
+                                    <thead>
+                                        <tr>
+                                            <th>NIP</th>
+                                            <th>Nama Pegawai</th>
+                                            <th>Departemen</th>
+                                            <th>Tingkat Konsentrasi</th>
+                                            <th>Tanggal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tableBody">
+                                        {% for data in data %}
+                                        <tr>
+                                            <td>{{ data.nip }}</td>
+                                            <td>{{ data.nama_pegawai }}</td>
+                                            <td>{{ data.departemen }}</td>
+                                            <td>{{ data.tingkat_konsentrasi }}</td>
+                                            <td>{{ data.tanggal }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                 <!-- Bagian Pagination -->
+                                <div class="col-md-12">
+                                    <nav aria-label="Page navigation">
+                                        <ul class="pagination justify-content-end">
+                                            <li class="page-item" id="nextPage">
+                                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                                            </li>
+                                            <li class="page-item active" aria-current="page">
+                                                <a class="page-link" href="#">1</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="#">2</a>
+                                            </li>
+                                            <!-- Tambahkan halaman-halaman lainnya di sini -->
+                                            <li class="page-item" id="nextPage">
+                                                <a class="page-link" href="#">Next</a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const searchInput = document.getElementById("searchInput");
+        const tableBody = document.getElementById("tableBody");
+        const itemsPerPage = 10; // Jumlah data per halaman
+        let currentPage = 1;
+
+        function updatePagination() {
+            const rows = tableBody.querySelectorAll("tr");
+
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+
+            rows.forEach(function(row, index) {
+                if (index >= startIndex && index < endIndex) {
+                    row.style.display = "table-row"; // Tampilkan baris
+                } else {
+                    row.style.display = "none"; // Sembunyikan baris
+                }
+            });
+
+            // Set visibilitas tombol-tombol pagination
+            document.getElementById("prevPage").classList.toggle("disabled", currentPage === 1);
+            document.getElementById("nextPage").classList.toggle("disabled", currentPage === Math.ceil(rows.length / itemsPerPage));
+        }
+
+        // Tambahkan event listener untuk perubahan input pencarian
+        searchInput.addEventListener("input", function() {
+            currentPage = 1; // Reset halaman saat melakukan pencarian
+            updatePagination();
+        });
+
+        // Tambahkan event listener untuk tombol "Previous" halaman
+        document.getElementById("prevPage").addEventListener("click", function() {
+            if (currentPage > 1) {
+                currentPage--;
+                updatePagination();
+            }
+        });
+
+        // Tambahkan event listener untuk tombol "Next" halaman
+        document.getElementById("nextPage").addEventListener("click", function() {
+            const rows = tableBody.querySelectorAll("tr");
+            const totalPages = Math.ceil(rows.length / itemsPerPage);
+
+            if (currentPage < totalPages) {
+                currentPage++;
+                updatePagination();
+            }
+        });
+
+        updatePagination();
+        document.getElementById("prevPage").classList.toggle("disabled", currentPage === 1);
+        document.getElementById("nextPage").classList.toggle("disabled", currentPage === Math.ceil(rows.length / itemsPerPage));
+
+    });
+</script>
+<!-- Script untuk pencarian -->
+<script>
+
+    
+document.addEventListener("DOMContentLoaded", function() {
+    const searchInput = document.getElementById("searchInput");
+    const tableBody = document.getElementById("tableBody");
+
+    // Tambahkan event listener untuk perubahan input pencarian
+    searchInput.addEventListener("input", function() {
+        const searchTerm = searchInput.value.toLowerCase();
+
+        // Ambil semua baris data dari tabel
+        const rows = tableBody.querySelectorAll("tr");
+
+        // Loop melalui baris dan sembunyikan yang tidak sesuai dengan kriteria pencarian
+        rows.forEach(function(row) {
+            const nipCell = row.cells[0].textContent.toLowerCase();
+            const namaCell = row.cells[1].textContent.toLowerCase();
+            const departemenCell = row.cells[2].textContent.toLowerCase();
+
+            // Tampilkan atau sembunyikan baris berdasarkan kriteria pencarian
+            if (
+                nipCell.includes(searchTerm) ||
+                namaCell.includes(searchTerm) ||
+                departemenCell.includes(searchTerm)
+            ) {
+                row.style.display = "table-row"; // Tampilkan baris
+            } else {
+                row.style.display = "none"; // Sembunyikan baris
+            }
+        });
+    });
+});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
