@@ -45,8 +45,9 @@ def main():
         current_alpha= initial_alpha * (decay_rate ** i)        
         for j in range(m):
             T = x[j]
-            J = ob.winner(weights, T)
+            J= ob.winner(weights, T)
             ob.update(weights, T, J, current_alpha, y[j])
+       
         
     correct_predictions = 0
     total_predictions = len(x)
@@ -86,4 +87,5 @@ def main():
         tingkat_konsentrasi = 'Konsentrasi Rendah'
 
     print("Hasil prediksi tingkat konsentrasi:", tingkat_konsentrasi)
+   
     return weights

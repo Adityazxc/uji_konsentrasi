@@ -5,52 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bootstrap demo</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    
+    <!-- line chart -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    
 </head>
 <body>
-   <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-primary">
-    <!-- Container wrapper -->
-    <div class="container-fluid">
-      <!-- Toggle button -->
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-mdb-toggle="collapse"
-        data-mdb-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <i class="fas fa-bars"></i>
-      </button>
-  
-      <!-- Collapsible wrapper -->
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <!-- Navbar brand -->
-        <a class="navbar-brand mt-2 mt-lg-0" >
-            Uji Konsentrasi
-        </a>
-       
-    </div>
-    
-    
-    <!-- Right elements -->
-    <div class="d-flex align-items-center">        
-        {% if 'username' in session %}
-        <div class="navbar-brand me-2 mt-lg-0">
-            {{ session['nama_pegawai'] }}
-        </div>
-        <a class="navbar-brand me-2 mt-lg-0" href="{{ url_for('login') }}">
-            Logout
-        </a>
-        {% endif %}
-    </div>
-      <!-- Right elements -->
-    </div>
-    <!-- Container wrapper -->
-  </nav>
-  <!-- Navbar -->
-      
+
+    {% include 'navbar.html' %}
   
 <div class="container mt-5">
     <div class="row"> 
@@ -166,56 +128,25 @@
                                     <option value="terlama">Terlama</option>
                                 </select>
                             </div>
-                           
-
-                            <script>
-                                document.addEventListener("DOMContentLoaded", function() {
-                                    const sortSelect = document.getElementById("sortSelect");
-                                    const tableBody = document.getElementById("tableBody");
-                                
-                                    // Tambahkan event listener untuk perubahan pilihan pengurutan
-                                    sortSelect.addEventListener("change", function() {
-                                        const selectedValue = sortSelect.value;
-                                
-                                        // Ambil semua baris data dari tabel
-                                        const rows = tableBody.querySelectorAll("tr");
-                                
-                                        // Ubah NodeList menjadi Array untuk mengakses metode sort
-                                        const rowsArray = Array.from(rows);
-                                
-                                        // Fungsi pembanding untuk mengurutkan berdasarkan tanggal
-                                        const compareDates = function(rowA, rowB) {
-                                            const dateA = new Date(rowA.cells[4].textContent);
-                                            const dateB = new Date(rowB.cells[4].textContent);
-                                
-                                            if (selectedValue === "terbaru") {
-                                                return dateB - dateA; // Mengurutkan dari terbaru ke terlama
-                                            } else if (selectedValue === "terlama") {
-                                                return dateA - dateB; // Mengurutkan dari terlama ke terbaru
-                                            }
-                                        };
-                                
-                                        // Urutkan array berdasarkan tanggal
-                                        rowsArray.sort(compareDates);
-                                
-                                        // Hapus semua baris dari tabel
-                                        tableBody.innerHTML = "";
-                                
-                                        // Masukkan kembali baris yang sudah diurutkan ke dalam tabel
-                                        rowsArray.forEach(function(row) {
-                                            tableBody.appendChild(row);
-                                        });
-                                    });
-                                });
-                                </script>
-                                
+                            <div class="col mb-3">
+                                <div class="col-md-10">
+                                    <a href="{{ url_for('export_csv') }}" class="btn btn-primary">Export to CSV</a>
+                                </div>
+                            </div>
+         
+<style>
+    table,th,td{
+        border: 1px solid black;
+    }
+</style>
                         </div>
                         <!-- Bagian data gelombang otak -->
                         <div class="row">
                             <div class="col-md-12">
-                                <table class="table table-stripped">
+                                <table class="table table-stripped" >
                                     <thead>
                                         <tr>
+                                            <th>No</th>
                                             <th>NIP</th>
                                             <th>Nama Pegawai</th>
                                             <th>Departemen</th>
@@ -224,37 +155,105 @@
                                         </tr>
                                     </thead>
                                     <tbody id="tableBody">
+                                        
                                         {% for data in data %}
                                         <tr>
+                                            <td>{{loop.index}} </td>
                                             <td>{{ data.nip }}</td>
                                             <td>{{ data.nama_pegawai }}</td>
                                             <td>{{ data.departemen }}</td>
                                             <td>{{ data.tingkat_konsentrasi }}</td>
                                             <td>{{ data.tanggal }}</td>
+                                            <td>
+                                                <button class="btn btn-link" onclick="drawLineChart(this)">Show Chart</button>
+                                            </td>
                                         </tr>
+                                        <tr class="chart-row" style="display: none;">
+                                            <td colspan="6">
+                                                <div class="chart-cell">
+                                                    <canvas class="line-chart"  width="400" height="300"></canvas>
+                                                </div>
+                                            </td>
+                                        </tr>                                
+                                                                      
                                         {% endfor %}
                                     </tbody>
+                                    
+
+                                   
+
                                 </table>
-                                 <!-- Bagian Pagination -->
-                                <div class="col-md-12">
+                            <!-- Bagian Pagination -->
+                                <!-- <div class="col-md-12">
                                     <nav aria-label="Page navigation">
                                         <ul class="pagination justify-content-end">
-                                            <li class="page-item" id="nextPage">
+                                            <li class="page-item" id="prevPage">
                                                 <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
                                             </li>
-                                            <li class="page-item active" aria-current="page">
-                                                <a class="page-link" href="#">1</a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a class="page-link" href="#">2</a>
-                                            </li>
-                                            <!-- Tambahkan halaman-halaman lainnya di sini -->
+                                            
                                             <li class="page-item" id="nextPage">
                                                 <a class="page-link" href="#">Next</a>
                                             </li>
                                         </ul>
                                     </nav>
-                                </div>
+                                </div> -->
+                                
+                                <script>
+                                    function drawLineChart(button) {
+                                    const chartRow = button.closest('tr');
+                                    const chartContainer = chartRow.nextElementSibling; // Get the next sibling row
+                                    const canvas = chartContainer.querySelector('.line-chart');
+
+                                    if (chartContainer.style.display === 'none') {
+                                        chartContainer.style.display = 'block';
+                                        const dataUji = [0.08185722, 0.09502756, 0.04491122, 0.06503574, 0.05635585, 0.03786717, 0.08185722, 0.09502756, 0.04491122];
+                                        const dataItem = [0.02269997, 0.01751783, 0.03700718, 0.04299396, 0.0460799, 0.03779127, 0.02269997, 0.01751783, 0.03700718];
+                                        drawChart(canvas, dataUji, dataItem);
+                                    } else {
+                                        chartContainer.style.display = 'none';
+                                    }
+                                }
+
+                                    function drawChart(canvas, dataUji, dataItem) {
+                                        const ctx = canvas.getContext('2d');
+                                        const chartData = {
+                                            labels: ['rA', 'rB', 'rG', 'stdA', 'stdB', 'stdG', 'absA', 'absB', 'absG'],
+                                            datasets: [
+                                                {
+                                                    label: 'Data Konsentrasi',
+                                                    data: dataUji,
+                                                    borderColor: 'blue',
+                                                    fill: false
+                                                },
+                                                {
+                                                    label: 'Konsentrasi',
+                                                    data: dataItem,
+                                                    borderColor: 'red',
+                                                    fill: false
+                                                }
+                                            ]
+                                        };
+
+                                        const chartConfig = {
+                                            type: 'line',
+                                            data: chartData,
+                                            options: {
+                                                responsive: true,
+                                                scales: {
+                                                    x: {
+                                                        beginAtZero: true
+                                                    },
+                                                    y: {
+                                                        beginAtZero: true
+                                                    }
+                                                }
+                                            }
+                                        };
+
+                                        new Chart(ctx, chartConfig);
+                                    }
+                                </script>
+
                             </div>
                         </div>
                     </div>
@@ -263,98 +262,11 @@
         </div>
     </div>
 </div>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const searchInput = document.getElementById("searchInput");
-        const tableBody = document.getElementById("tableBody");
-        const itemsPerPage = 10; // Jumlah data per halaman
-        let currentPage = 1;
 
-        function updatePagination() {
-            const rows = tableBody.querySelectorAll("tr");
-
-            const startIndex = (currentPage - 1) * itemsPerPage;
-            const endIndex = startIndex + itemsPerPage;
-
-            rows.forEach(function(row, index) {
-                if (index >= startIndex && index < endIndex) {
-                    row.style.display = "table-row"; // Tampilkan baris
-                } else {
-                    row.style.display = "none"; // Sembunyikan baris
-                }
-            });
-
-            // Set visibilitas tombol-tombol pagination
-            document.getElementById("prevPage").classList.toggle("disabled", currentPage === 1);
-            document.getElementById("nextPage").classList.toggle("disabled", currentPage === Math.ceil(rows.length / itemsPerPage));
-        }
-
-        // Tambahkan event listener untuk perubahan input pencarian
-        searchInput.addEventListener("input", function() {
-            currentPage = 1; // Reset halaman saat melakukan pencarian
-            updatePagination();
-        });
-
-        // Tambahkan event listener untuk tombol "Previous" halaman
-        document.getElementById("prevPage").addEventListener("click", function() {
-            if (currentPage > 1) {
-                currentPage--;
-                updatePagination();
-            }
-        });
-
-        // Tambahkan event listener untuk tombol "Next" halaman
-        document.getElementById("nextPage").addEventListener("click", function() {
-            const rows = tableBody.querySelectorAll("tr");
-            const totalPages = Math.ceil(rows.length / itemsPerPage);
-
-            if (currentPage < totalPages) {
-                currentPage++;
-                updatePagination();
-            }
-        });
-
-        updatePagination();
-        document.getElementById("prevPage").classList.toggle("disabled", currentPage === 1);
-        document.getElementById("nextPage").classList.toggle("disabled", currentPage === Math.ceil(rows.length / itemsPerPage));
-
-    });
-</script>
 <!-- Script untuk pencarian -->
-<script>
+<script src="{{url_for('static', filename='js/search.js')}}"></script>
+<script src="{{url_for('static', filename='js/filter.js')}}"></script>
 
-    
-document.addEventListener("DOMContentLoaded", function() {
-    const searchInput = document.getElementById("searchInput");
-    const tableBody = document.getElementById("tableBody");
-
-    // Tambahkan event listener untuk perubahan input pencarian
-    searchInput.addEventListener("input", function() {
-        const searchTerm = searchInput.value.toLowerCase();
-
-        // Ambil semua baris data dari tabel
-        const rows = tableBody.querySelectorAll("tr");
-
-        // Loop melalui baris dan sembunyikan yang tidak sesuai dengan kriteria pencarian
-        rows.forEach(function(row) {
-            const nipCell = row.cells[0].textContent.toLowerCase();
-            const namaCell = row.cells[1].textContent.toLowerCase();
-            const departemenCell = row.cells[2].textContent.toLowerCase();
-
-            // Tampilkan atau sembunyikan baris berdasarkan kriteria pencarian
-            if (
-                nipCell.includes(searchTerm) ||
-                namaCell.includes(searchTerm) ||
-                departemenCell.includes(searchTerm)
-            ) {
-                row.style.display = "table-row"; // Tampilkan baris
-            } else {
-                row.style.display = "none"; // Sembunyikan baris
-            }
-        });
-    });
-});
-</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

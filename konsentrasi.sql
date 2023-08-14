@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 08 Agu 2023 pada 11.39
+-- Waktu pembuatan: 12 Agu 2023 pada 03.42
 -- Versi server: 10.4.28-MariaDB
 -- Versi PHP: 8.0.28
 
@@ -24,10 +24,10 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `gelombangotak`
+-- Struktur dari tabel `gelombang_otak`
 --
 
-CREATE TABLE `gelombangotak` (
+CREATE TABLE `gelombang_otak` (
   `id_gelombang` int(11) NOT NULL,
   `nip` int(11) DEFAULT NULL,
   `rA` float DEFAULT NULL,
@@ -39,43 +39,53 @@ CREATE TABLE `gelombangotak` (
   `absA` float DEFAULT NULL,
   `absB` float DEFAULT NULL,
   `absG` float DEFAULT NULL,
-  `tingkatKonsentrasi` varchar(20) DEFAULT NULL
+  `tingkat_konsentrasi` varchar(20) DEFAULT NULL,
+  `tanggal` datetime DEFAULT current_timestamp(),
+  `nama_pegawai` varchar(100) DEFAULT NULL,
+  `departemen` varchar(25) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `gelombangotak`
+-- Dumping data untuk tabel `gelombang_otak`
 --
 
-INSERT INTO `gelombangotak` (`id_gelombang`, `nip`, `rA`, `rB`, `rG`, `stdA`, `stdB`, `stdG`, `absA`, `absB`, `absG`, `tingkatKonsentrasi`) VALUES
-(11, 10119182, 0.081764, 0.096015, 0.045201, 0.06558, 0.056296, 0.038119, 0.052543, 0.043369, 0.028479, 'Konsentrasi Tinggi'),
-(12, 10119182, 0.036466, 0.124103, 0.032785, 0.046595, 0.067708, 0.024707, 0.02581, 0.053476, 0.015274, 'Konsentrasi Tinggi'),
-(13, 10119182, 0.04231, 0.103397, 0.068093, 0.040033, 0.060831, 0.038097, 0.022591, 0.044865, 0.030454, 'Konsentrasi Tinggi'),
-(14, 10119182, 0.061922, 0.021998, 0.017235, 0.059955, 0.038839, 0.023667, 0.043413, 0.016671, 0.011241, 'Konsentrasi Rendah'),
-(15, 10119182, 0.042689, 0.026401, 0.016038, 0.0573, 0.0395, 0.029517, 0.039024, 0.020422, 0.015676, 'Konsentrasi Rendah'),
-(16, 10119182, 0.081764, 0.096015, 0.045201, 0.06558, 0.056296, 0.038119, 0.052543, 0.043369, 0.028479, 'Konsentrasi Tinggi'),
-(17, 10119182, 0.066219, 0.08647, 0.058151, 0.059604, 0.066545, 0.042037, 0.045801, 0.054037, 0.035122, 'Konsentrasi Tinggi'),
-(18, 10119182, 0.053367, 0.048471, 0.029864, 0.058572, 0.056344, 0.035242, 0.042241, 0.039502, 0.024312, 'Konsentrasi Rendah'),
-(19, 10119182, 0.081764, 0.096015, 0.045201, 0.06558, 0.056296, 0.038119, 0.052543, 0.043369, 0.028479, 'Konsentrasi Tinggi'),
-(20, 10119182, 0.022965, 0.017765, 0.037356, 0.043306, 0.046428, 0.038011, 0.024705, 0.02095, 0.029305, 'Konsentrasi Rendah');
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `pegawai`
---
-
-CREATE TABLE `pegawai` (
-  `nip` int(11) NOT NULL,
-  `nama` varchar(255) DEFAULT NULL,
-  `departemen` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data untuk tabel `pegawai`
---
-
-INSERT INTO `pegawai` (`nip`, `nama`, `departemen`) VALUES
-(10119182, 'Aditya Firmansyah', 'Human Capital');
+INSERT INTO `gelombang_otak` (`id_gelombang`, `nip`, `rA`, `rB`, `rG`, `stdA`, `stdB`, `stdG`, `absA`, `absB`, `absG`, `tingkat_konsentrasi`, `tanggal`, `nama_pegawai`, `departemen`) VALUES
+(1, 123, 0.0425062, 0.0271026, 0.0161145, 0.0568385, 0.0395507, 0.0292761, 0.0425062, 0.0271026, 0.0161145, 'Konsentrasi Rendah', '2023-08-10 19:44:04', 'jul', 'information_technology'),
+(2, 1234, 0.0613207, 0.0219038, 0.0172067, 0.0596386, 0.0385206, 0.0234698, 0.0613207, 0.0219038, 0.0172067, 'Konsentrasi Tinggi', '2023-08-10 19:44:23', 'enjul', 'information_technology'),
+(3, 1234, 0.0613207, 0.0219038, 0.0172067, 0.0596386, 0.0385206, 0.0234698, 0.0613207, 0.0219038, 0.0172067, 'Konsentrasi Tinggi', '2023-08-10 19:44:39', 'enjul', 'information_technology'),
+(4, 1234, 0.0613207, 0.0219038, 0.0172067, 0.0596386, 0.0385206, 0.0234698, 0.0613207, 0.0219038, 0.0172067, 'Konsentrasi Tinggi', '2023-08-10 19:44:44', 'enjul', 'information_technology'),
+(5, 456, 0.0818572, 0.0950276, 0.0449112, 0.0650357, 0.0563559, 0.0378672, 0.0818572, 0.0950276, 0.0449112, 'Konsentrasi Tinggi', '2023-08-10 19:45:58', 'aaaa', 'information_technology'),
+(6, 456, 0.0818572, 0.0950276, 0.0449112, 0.0650357, 0.0563559, 0.0378672, 0.0818572, 0.0950276, 0.0449112, 'Konsentrasi Tinggi', '2023-08-10 19:46:02', 'aaaa', 'information_technology'),
+(7, 10119182, 0.0370418, 0.124241, 0.0331913, 0.0464236, 0.0671498, 0.0247047, 0.0370418, 0.124241, 0.0331913, 'Konsentrasi Rendah', '2023-08-10 20:25:42', 'hey jule', 'information_technology'),
+(8, 10119182, 0.0370418, 0.124241, 0.0331913, 0.0464236, 0.0671498, 0.0247047, 0.0370418, 0.124241, 0.0331913, 'Konsentrasi Rendah', '2023-08-10 20:28:15', 'hey jule', 'information_technology'),
+(9, 10119182, 0.0370418, 0.124241, 0.0331913, 0.0464236, 0.0671498, 0.0247047, 0.0370418, 0.124241, 0.0331913, 'Konsentrasi Rendah', '2023-08-10 20:30:04', 'hey jule', 'information_technology'),
+(10, 10119182, 0.0370418, 0.124241, 0.0331913, 0.0464236, 0.0671498, 0.0247047, 0.0370418, 0.124241, 0.0331913, 'Konsentrasi Rendah', '2023-08-10 20:30:58', 'hey jule', 'information_technology'),
+(11, 10119182, 0.0370418, 0.124241, 0.0331913, 0.0464236, 0.0671498, 0.0247047, 0.0370418, 0.124241, 0.0331913, 'Konsentrasi Rendah', '2023-08-10 20:33:17', 'hey jule', 'information_technology'),
+(12, 10119182, 0.0370418, 0.124241, 0.0331913, 0.0464236, 0.0671498, 0.0247047, 0.0370418, 0.124241, 0.0331913, 'Konsentrasi Rendah', '2023-08-10 20:33:54', 'hey jule', 'information_technology'),
+(13, 10119182, 0.0370418, 0.124241, 0.0331913, 0.0464236, 0.0671498, 0.0247047, 0.0370418, 0.124241, 0.0331913, 'Konsentrasi Rendah', '2023-08-10 20:47:47', 'hey jule', 'information_technology'),
+(14, 10119182, 0.0370418, 0.124241, 0.0331913, 0.0464236, 0.0671498, 0.0247047, 0.0370418, 0.124241, 0.0331913, 'Konsentrasi Rendah', '2023-08-10 20:52:20', 'hey jule', 'information_technology'),
+(15, 10119182, 0.0370418, 0.124241, 0.0331913, 0.0464236, 0.0671498, 0.0247047, 0.0370418, 0.124241, 0.0331913, 'Konsentrasi Rendah', '2023-08-10 20:54:19', 'hey jule', 'information_technology'),
+(16, 10119182, 0.0370418, 0.124241, 0.0331913, 0.0464236, 0.0671498, 0.0247047, 0.0370418, 0.124241, 0.0331913, 'Konsentrasi Rendah', '2023-08-10 20:54:26', 'hey jule', 'information_technology'),
+(17, 10119182, 0.0370418, 0.124241, 0.0331913, 0.0464236, 0.0671498, 0.0247047, 0.0370418, 0.124241, 0.0331913, 'Konsentrasi Rendah', '2023-08-10 20:57:56', 'hey jule', 'information_technology'),
+(18, 10119182, 0.0370418, 0.124241, 0.0331913, 0.0464236, 0.0671498, 0.0247047, 0.0370418, 0.124241, 0.0331913, 'Konsentrasi Rendah', '2023-08-10 21:00:21', 'hey jule', 'information_technology'),
+(19, 10119182, 0.0370418, 0.124241, 0.0331913, 0.0464236, 0.0671498, 0.0247047, 0.0370418, 0.124241, 0.0331913, 'Konsentrasi Rendah', '2023-08-10 21:01:36', 'hey jule', 'information_technology'),
+(20, 10119182, 0.0370418, 0.124241, 0.0331913, 0.0464236, 0.0671498, 0.0247047, 0.0370418, 0.124241, 0.0331913, 'Konsentrasi Rendah', '2023-08-10 21:06:14', 'hey jule', 'information_technology'),
+(21, 10119182, 0.0370418, 0.124241, 0.0331913, 0.0464236, 0.0671498, 0.0247047, 0.0370418, 0.124241, 0.0331913, 'Konsentrasi Rendah', '2023-08-10 21:11:02', 'hey jule', 'information_technology'),
+(22, 10119182, 0.0370418, 0.124241, 0.0331913, 0.0464236, 0.0671498, 0.0247047, 0.0370418, 0.124241, 0.0331913, 'Konsentrasi Rendah', '2023-08-10 23:22:45', 'hey jule', 'information_technology'),
+(23, 10119182, 0.0370418, 0.124241, 0.0331913, 0.0464236, 0.0671498, 0.0247047, 0.0370418, 0.124241, 0.0331913, 'Konsentrasi Rendah', '2023-08-10 23:24:24', 'hey jule', 'information_technology'),
+(24, 10119182, 0.0370418, 0.124241, 0.0331913, 0.0464236, 0.0671498, 0.0247047, 0.0370418, 0.124241, 0.0331913, 'Konsentrasi Rendah', '2023-08-10 23:26:06', 'hey jule', 'information_technology'),
+(25, 10119182, 0.0370418, 0.124241, 0.0331913, 0.0464236, 0.0671498, 0.0247047, 0.0370418, 0.124241, 0.0331913, 'Konsentrasi Rendah', '2023-08-10 23:26:19', 'hey jule', 'information_technology'),
+(26, 10119182, 0.0370418, 0.124241, 0.0331913, 0.0464236, 0.0671498, 0.0247047, 0.0370418, 0.124241, 0.0331913, 'Konsentrasi Rendah', '2023-08-10 23:32:28', 'hey jule', 'information_technology'),
+(27, 1019293, 0.0613207, 0.0219038, 0.0172067, 0.0596386, 0.0385206, 0.0234698, 0.0613207, 0.0219038, 0.0172067, 'Konsentrasi Tinggi', '2023-08-11 01:37:49', 'Adit', 'information_technology'),
+(28, 1019293, 0.0613207, 0.0219038, 0.0172067, 0.0596386, 0.0385206, 0.0234698, 0.0613207, 0.0219038, 0.0172067, 'Konsentrasi Tinggi', '2023-08-11 01:39:55', 'Adit', 'information_technology'),
+(29, 1, 0.0613207, 0.0219038, 0.0172067, 0.0596386, 0.0385206, 0.0234698, 0.0613207, 0.0219038, 0.0172067, 'Konsentrasi Tinggi', '2023-08-11 01:40:02', 'w', 'information_technology'),
+(30, 1, 0.0613207, 0.0219038, 0.0172067, 0.0596386, 0.0385206, 0.0234698, 0.0613207, 0.0219038, 0.0172067, 'Konsentrasi Tinggi', '2023-08-11 02:04:57', 'w', 'information_technology'),
+(31, 1, 0.0613207, 0.0219038, 0.0172067, 0.0596386, 0.0385206, 0.0234698, 0.0613207, 0.0219038, 0.0172067, 'Konsentrasi Tinggi', '2023-08-11 02:05:44', 'w', 'information_technology'),
+(32, 1, 0.0613207, 0.0219038, 0.0172067, 0.0596386, 0.0385206, 0.0234698, 0.0613207, 0.0219038, 0.0172067, 'Konsentrasi Tinggi', '2023-08-11 02:05:55', 'w', 'information_technology'),
+(33, 1, 0.0613207, 0.0219038, 0.0172067, 0.0596386, 0.0385206, 0.0234698, 0.0613207, 0.0219038, 0.0172067, 'Konsentrasi Tinggi', '2023-08-11 02:06:02', 'w', 'information_technology'),
+(34, 1, 0.0613207, 0.0219038, 0.0172067, 0.0596386, 0.0385206, 0.0234698, 0.0613207, 0.0219038, 0.0172067, 'Konsentrasi Tinggi', '2023-08-11 02:06:16', 'w', 'information_technology'),
+(35, 1, 0.0613207, 0.0219038, 0.0172067, 0.0596386, 0.0385206, 0.0234698, 0.0613207, 0.0219038, 0.0172067, 'Konsentrasi Tinggi', '2023-08-11 02:09:26', 'w', 'information_technology'),
+(36, 1, 0.0613207, 0.0219038, 0.0172067, 0.0596386, 0.0385206, 0.0234698, 0.0613207, 0.0219038, 0.0172067, 'Konsentrasi Tinggi', '2023-08-11 02:09:59', 'w', 'information_technology');
 
 -- --------------------------------------------------------
 
@@ -101,17 +111,10 @@ INSERT INTO `pengguna` (`nip`, `nama_pegawai`, `password`) VALUES
 --
 
 --
--- Indeks untuk tabel `gelombangotak`
+-- Indeks untuk tabel `gelombang_otak`
 --
-ALTER TABLE `gelombangotak`
-  ADD PRIMARY KEY (`id_gelombang`),
-  ADD KEY `nip` (`nip`);
-
---
--- Indeks untuk tabel `pegawai`
---
-ALTER TABLE `pegawai`
-  ADD PRIMARY KEY (`nip`);
+ALTER TABLE `gelombang_otak`
+  ADD PRIMARY KEY (`id_gelombang`);
 
 --
 -- Indeks untuk tabel `pengguna`
@@ -124,20 +127,10 @@ ALTER TABLE `pengguna`
 --
 
 --
--- AUTO_INCREMENT untuk tabel `gelombangotak`
+-- AUTO_INCREMENT untuk tabel `gelombang_otak`
 --
-ALTER TABLE `gelombangotak`
-  MODIFY `id_gelombang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
-
---
--- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
---
-
---
--- Ketidakleluasaan untuk tabel `gelombangotak`
---
-ALTER TABLE `gelombangotak`
-  ADD CONSTRAINT `gelombangotak_ibfk_1` FOREIGN KEY (`nip`) REFERENCES `pegawai` (`nip`);
+ALTER TABLE `gelombang_otak`
+  MODIFY `id_gelombang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

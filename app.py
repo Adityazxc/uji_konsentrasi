@@ -1,39 +1,39 @@
-import os,json
-from flask import Flask, render_template, request,session, redirect, url_for
-from flask_sqlalchemy import SQLAlchemy #library koneksi ke mysql
+import os,math
+from flask import render_template, request,session, redirect, url_for, Response
+# from flask_paginate import Pagination, get_page_args
 import pandas as pd
 # mengambil file 
 from preprocessing import persiapan_data
 from werkzeug.utils import secure_filename
 from lvq import LVQ, main
 from datetime import datetime
+from connection import Pengguna, get_nama_pegawai_from_database, db, GelombangOtak, app,db
 
 
 
-app = Flask(__name__)
 app.secret_key = 'your_actual_secret_key_here'
 ob=LVQ()
 weights=main()
 
-# Konfigurasi database URI
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://Aditya:Aditya@localhost/konsentrasi'
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:password_baru@localhost/konsentrasi'
-db = SQLAlchemy(app)
-
-# Definisi model untuk tabel database (pengguna)
-class Pengguna(db.Model):
-    nip = db.Column(db.String(8), primary_key=True)
-    nama_pegawai = db.Column(db.String(100), nullable=False)
-    password = db.Column(db.String(100), nullable=False)
-
-    def __repr__(self):
-        return f'<Pengguna {self.nip}>'
-
-def get_nama_pegawai_from_database(nip):
-    pengguna = Pengguna.query.filter_by(nip=nip).first()
-    if pengguna:
-        return {'nama_pegawai': pengguna.nama_pegawai}
-    return None
+# Fungsi untuk mengambil data dari tabel dan menyimpan sebagai CSV
+def export_to_csv():
+    data = GelombangOtak.query.all()
+    data_list = [{  'id_gelombang': row.id_gelombang, 
+                    'nip': row.nip, 
+                    'nama_pegawai': row.nama_pegawai,
+                    'departemen':row.departemen,
+                    'rA': row.rA,
+                    'rB': row.rB,
+                    'rG': row.rG,
+                    'stdA': row.stdA,
+                    'stdB': row.stdB,
+                    'stdG': row.stdG,
+                    'absA': row.absA,
+                    'absB': row.absB,
+                    'absG': row.absG,                    
+                    'tingkat_konsentrasi': row.tingkat_konsentrasi,
+                    'tanggal':row.tanggal } for row in data]
+    return data_list
 
 # Route untuk halaman login
 @app.route('/login', methods=['GET', 'POST'])
@@ -65,30 +65,10 @@ def login():
     return render_template('login.html' ,response_message=response_message)
 
 
-
-
-#gelombang otak
-class GelombangOtak(db.Model):
-    __tablename__ = 'gelombang_otak' 
-    id_gelombang=db.Column(db.Integer, primary_key=True)    
-    nip=db.Column(db.Integer())    
-    nama_pegawai=db.Column(db.String(100))
-    departemen=db.Column(db.String(100))
-    rA=db.Column(db.Float())
-    rB=db.Column(db.Float())
-    rG=db.Column(db.Float())
-    stdA=db.Column(db.Float())
-    stdB=db.Column(db.Float())
-    stdG=db.Column(db.Float())
-    absA=db.Column(db.Float())
-    absB=db.Column(db.Float())
-    absG=db.Column(db.Float())
-    tingkat_konsentrasi=db.Column(db.String(20))
-    tanggal=db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
-
-
 # Menentukan direktori upload file
-UPLOAD_FOLDER = os.path.join('staticFiles', 'uploads')
+UPLOAD_FOLDER = os.path.join('static', 'uploads')
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 # Menentukan extension apa saja yang dapat diterima
 ALLOWED_EXTENSIONS = {'csv'}
 
@@ -98,11 +78,24 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 def upload_csv():
     if 'username' not in session:
         return redirect(url_for('login'))
-    response_message = None
-    result = None
-    data_gelombang_otak = GelombangOtak.query.all()
+    
     # mengambil data dari input form di file dashboard
     input_nip= request.form.get('nip')
+
+    response_message = None
+    result = None    
+    data_gelombang_otak=GelombangOtak.query.all()
+    # page, per_page, offset = get_page_args(page_parameter='page', per_page_parameter='per_page')
+    # total_data = GelombangOtak.query.count()
+
+    # pagination = Pagination(page=page, per_page=per_page, total=total_data, css_framework='bootstrap4')
+    # data_gelombang_otak_paginated = GelombangOtak.query.offset(offset).limit(per_page).all()
+
+    x=[0.08185722, 0.09502756, 0.04491122, 0.06503574, 0.05635585,
+       0.03786717, 0.08185722, 0.09502756, 0.04491122] 
+    y=[0.02269997, 0.01751783, 0.03700718, 0.04299396, 0.0460799 ,
+        0.03779127, 0.02269997, 0.01751783, 0.03700718]
+            
 
     if request.method == 'POST':
        
@@ -122,7 +115,7 @@ def upload_csv():
                 input_nama=request.form.get('nama_pegawai')
                 input_departemen=request.form.get('departemen')
 
-            
+               
                 # proses lvq
                 data_uji = {
                     'rA': processed_data['rA'],
@@ -135,16 +128,17 @@ def upload_csv():
                     'absB': processed_data['absB'],
                     'absG': processed_data['absG'],
                 }
+
                 data_uji = pd.DataFrame([data_uji])
                 # Proses data uji
                 prediksi=ob.winner(weights,data_uji.values[0])
-                
                 # Interpretasikan hasil prediksi
                 if prediksi == 1:
                     tingkat_konsentrasi = 'Konsentrasi Tinggi'
                 else:
                     tingkat_konsentrasi = 'Konsentrasi Rendah'
 
+               
                 # Prepare the data for database insertion
                 item = {
                     'nip': input_nip,
@@ -168,8 +162,37 @@ def upload_csv():
                 db.session.commit()
                 result = processed_data
 
+                # Update pagination after data insertion
+                # total_data = GelombangOtak.query.count()
+                # pagination = Pagination(page=page, per_page=per_page, total=total_data, css_framework='bootstrap5')
+                # data_gelombang_otak_paginated = GelombangOtak.query.offset(offset).limit(per_page).all()
+
+    print( )
+
+    
+    return render_template('dashboard.html', x=x,y=y,data=data_gelombang_otak,response_message=response_message, result=result)
+
+@app.route('/export_csv')
+def export_csv():
     data_gelombang_otak = GelombangOtak.query.all()
-    return render_template('dashboard.html', data=data_gelombang_otak,response_message=response_message, result=result)
+    df = pd.DataFrame([{
+        'NIP': data.nip,
+        'Nama Pegawai': data.nama_pegawai,
+        'Departemen': data.departemen,
+        'Tingkat Konsentrasi': data.tingkat_konsentrasi,
+        'Tanggal': data.tanggal
+    } for data in data_gelombang_otak])
+    
+    csv_output = df.to_csv(index=False, columns=['NIP', 'Nama Pegawai', 'Departemen', 'Tingkat Konsentrasi', 'Tanggal'])
+    
+    response = Response(
+        csv_output,
+        content_type="text/csv",
+        headers={"Content-Disposition": "attachment; filename=data_gelombang_otak.csv"}
+    )
+    
+    return response
+
 
 def process_uploaded_file(file):
     data_filename = secure_filename(file.filename)
@@ -177,6 +200,9 @@ def process_uploaded_file(file):
     file.save(file_path)
     session['uploaded_data_file_path'] = file_path
     return data_filename, file_path
+
+
+
 
 
 if __name__ == '__main__':
