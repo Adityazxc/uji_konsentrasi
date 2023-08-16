@@ -31,9 +31,11 @@ def main():
     y=Y[:8]
 
     m, n = len(x), len(x[0])
+    # bobot diambil dari data ke 9 dan 10
     weights = [X[8], X[9]]
     print(weights)
-        
+    
+    # Bobot awal tidak digunakan untuk data traning
     m = m - 2
     
     ob = LVQ()
@@ -64,28 +66,6 @@ def main():
     accuracy = correct_predictions / total_predictions
     print("Accuracy on training data:", accuracy)
 
-    data_ujii = {
-        'rA': 0.0613206669742934,
-        'rB': 0.021903752853370585,
-        'rG': 0.017206691296222557,
-        'stdA': 0.05963858661362358,
-        'stdB': 0.03852060134562539,
-        'stdG': 0.02346984637655139,
-        'absA': 0.0613206669742934,
-        'absB': 0.021903752853370585,
-        'absG': 0.017206691296222557,
-    }
-        # Preprocess data uji
-    data_uji_preprocessed = pd.DataFrame([data_ujii])
-    # Lakukan prediksi dengan model LVQ
-    predicted_class = ob.winner(weights, data_uji_preprocessed.values[0])
-
-    # Interpretasikan hasil prediksi
-    if predicted_class == 1:
-        tingkat_konsentrasi = 'Konsentrasi Tinggi'
-    else:
-        tingkat_konsentrasi = 'Konsentrasi Rendah'
-
-    print("Hasil prediksi tingkat konsentrasi:", tingkat_konsentrasi)
+  
    
     return weights

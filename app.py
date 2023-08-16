@@ -81,7 +81,7 @@ def upload_csv():
     
     # mengambil data dari input form di file dashboard
     input_nip= request.form.get('nip')
-
+    hasil="hasil"
     response_message = None
     result = None    
     data_gelombang_otak=GelombangOtak.query.all()
@@ -161,16 +161,11 @@ def upload_csv():
                 db.session.add(new_entry)
                 db.session.commit()
                 result = processed_data
+              
 
-                # Update pagination after data insertion
-                # total_data = GelombangOtak.query.count()
-                # pagination = Pagination(page=page, per_page=per_page, total=total_data, css_framework='bootstrap5')
-                # data_gelombang_otak_paginated = GelombangOtak.query.offset(offset).limit(per_page).all()
-
-    print( )
 
     
-    return render_template('dashboard.html', x=x,y=y,data=data_gelombang_otak,response_message=response_message, result=result)
+    return render_template('dashboard.html',hasil=hasil, x=x,y=y,data=data_gelombang_otak,response_message=response_message, result=result)
 
 @app.route('/export_csv')
 def export_csv():
