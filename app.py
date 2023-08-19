@@ -71,8 +71,8 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Menentukan extension apa saja yang dapat diterima
 ALLOWED_EXTENSIONS = {'csv'}
-
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
  # Route untuk halaman dashboard
 @app.route('/dashboard', methods=['GET', 'POST'])
 def upload_csv():
@@ -84,13 +84,7 @@ def upload_csv():
     hasil="hasil"
     response_message = None
     result = None    
-    data_gelombang_otak=GelombangOtak.query.all()
-    # page, per_page, offset = get_page_args(page_parameter='page', per_page_parameter='per_page')
-    # total_data = GelombangOtak.query.count()
-
-    # pagination = Pagination(page=page, per_page=per_page, total=total_data, css_framework='bootstrap4')
-    # data_gelombang_otak_paginated = GelombangOtak.query.offset(offset).limit(per_page).all()
-
+    data_gelombang_otak=GelombangOtak.query.all()  
     x=[0.08185722, 0.09502756, 0.04491122, 0.06503574, 0.05635585,
        0.03786717, 0.08185722, 0.09502756, 0.04491122] 
     y=[0.02269997, 0.01751783, 0.03700718, 0.04299396, 0.0460799 ,

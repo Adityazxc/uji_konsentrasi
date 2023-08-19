@@ -1,10 +1,5 @@
 import pandas as pd
 
-# path='data/ArasHigh.csv'
-
-# # mengubah format ; menjadi rapi
-# data_mentah=pd.read_csv(path)
-# print(data_mentah)
 
 
 # Atribut A, B dan G didapat dari rata-rata gelombang Alpha beta dan Gamma
@@ -162,20 +157,7 @@ def gelombang_otak(data_mentah):
         'absG': absG,
         'target':target,
     }
-# file mentah untuk data uji dan data latih
-mentah=[
-    'data/AditHigh.csv',
-    'data/AditLow.csv',
-    'data/AhmadHigh.csv',
-    'data/AhmadLow.csv',
-    'data/AndiHigh.csv',
-    'data/AndiLow.csv',
-    'data/ArasHigh.csv',
-    'data/ArasLow.csv',
-    'data/JulHigh.csv',
-    'data/JulLow.csv',
 
-]
 
 
 # data latih
@@ -186,12 +168,9 @@ data_latih=['rA','rB','rG','stdA','stdB','stdG','absA','absB','absG','target']
 # membuat variabel untuk menampung data_latih
 data_latih=pd.DataFrame(columns=data_latih)
 
-from io import StringIO
+
 # fungsi persiapan data (mengubah data mentah menjadi data siap uji)
-def persiapan_data(df):
-    # Membaca data mentah sebagai file CSV dengan menggunakan StringIO
-    # data_io = StringIO(data_mentah)
-    # df = pd.read_csv(data_io)    
+def persiapan_data(df):   
     atribut_gelombang(df)
     normalisasi(df)
     ekstraksi_gelombang(df)
@@ -201,17 +180,7 @@ def persiapan_data(df):
 
 
 
-for data in mentah:
-    hasil_data=pd.read_csv(data)
-    result=persiapan_data(hasil_data)
-    
-    # tambahkan fungsi concat untuk menambahkan hasil perhitungan ke dalam data_latih
-    data_latih=pd.concat([data_latih, pd.DataFrame([result])],ignore_index=True)
 
-
-# print("jumlah target 1 adalah :",data_latih['target'].sum())
-# print("dari",len(data_latih),' data')
-# print(data_latih)
 
 
 
