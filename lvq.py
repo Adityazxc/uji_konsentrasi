@@ -29,6 +29,7 @@ def main():
     Y = data_latih['target'].values
     x=X[:8]
     y=Y[:8]
+    print(x,y)
 
     m, n = len(x), len(x[0])
     # bobot diambil dari data ke 9 dan 10

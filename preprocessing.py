@@ -158,7 +158,19 @@ def gelombang_otak(data_mentah):
         'target':target,
     }
 
+mentah=[
+    'data/AditHigh.csv',
+    'data/AditLow.csv',
+    'data/AhmadHigh.csv',
+    'data/AhmadLow.csv',
+    'data/AndiHigh.csv',
+    'data/AndiLow.csv',
+    'data/ArasHigh.csv',
+    'data/ArasLow.csv',
+    'data/JulHigh.csv',
+    'data/JulLow.csv',
 
+]
 
 # data latih
 
@@ -177,7 +189,12 @@ def persiapan_data(df):
     hasil=gelombang_otak(df)
     return hasil
 
+for data in mentah:
+    hasil_data=pd.read_csv(data)
+    result=persiapan_data(hasil_data)
 
+    # tambahkan fungsi concat untuk menambahkan hasil perhitungan ke dalam data_latih
+    data_latih=pd.concat([data_latih, pd.DataFrame([result])],ignore_index=True)
 
 
 

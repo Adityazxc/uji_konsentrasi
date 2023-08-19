@@ -13,7 +13,7 @@ from connection import Pengguna, get_nama_pegawai_from_database, db, GelombangOt
 
 app.secret_key = 'your_actual_secret_key_here'
 ob=LVQ()
-weights=main()
+
 
 # Fungsi untuk mengambil data dari tabel dan menyimpan sebagai CSV
 def export_to_csv():
@@ -125,6 +125,7 @@ def upload_csv():
 
                 data_uji = pd.DataFrame([data_uji])
                 # Proses data uji
+                weights=main()
                 prediksi=ob.winner(weights,data_uji.values[0])
                 # Interpretasikan hasil prediksi
                 if prediksi == 1:

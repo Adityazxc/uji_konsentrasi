@@ -1,0 +1,58 @@
+# Python-related
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+*.cpython-310.pyc
+# Virtual environment
+venv/
+env/
+*.env
+
+# Logs
+*.log
+
+# Compiled files
+*.pyc
+*.pyo
+*.pyd
+
+# Dependency directories
+lib/
+lib64/
+bin/
+include/
+Scripts/
+eggs/
+*.egg
+
+# Development files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# Environment-specific files
+.env
+
+# Compiled Python files
+*.pyc
+*.pyo
+
+# Database files
+*.db
+*.sqlite3
+
+# IDE-specific files
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Editor backups
+*~
+.#*
+
+# Application instance folder
+instance/
