@@ -3,7 +3,7 @@ from flask import render_template, request,session, redirect, url_for, Response
 # from flask_paginate import Pagination, get_page_args
 import pandas as pd
 # mengambil file 
-from preprocessing import persiapan_data
+from preprocessing import persiapan_data,atribut_gelombang,normalisasi,ekstraksi_gelombang
 from werkzeug.utils import secure_filename
 from lvq import LVQ, main
 from datetime import datetime
@@ -84,6 +84,8 @@ def upload_csv():
     hasil="hasil"
     response_message = None
     result = None    
+    output_atribut = None
+   
     data_gelombang_otak=GelombangOtak.query.all()  
     x=[0.08185722, 0.09502756, 0.04491122, 0.06503574, 0.05635585,
        0.03786717, 0.08185722, 0.09502756, 0.04491122] 
@@ -104,6 +106,8 @@ def upload_csv():
                 response_message = "Data kurang dari 70"
             else:
                 # proses upload data hasil ke database
+                output_atribut=atribut_gelombang(uploaded_df)
+                
                 processed_data = persiapan_data(uploaded_df)
                 input_nip=request.form.get('nip')
                 input_nama=request.form.get('nama_pegawai')
@@ -160,7 +164,18 @@ def upload_csv():
 
 
     
-    return render_template('dashboard.html',hasil=hasil, x=x,y=y,data=data_gelombang_otak,response_message=response_message, result=result)
+    return render_template(
+        'dashboard.html',
+        hasil=hasil,
+        x=x,y=y,
+        data=data_gelombang_otak,
+        response_message=response_message,
+        result=result,
+        output_atribut=output_atribut,
+      
+        
+         
+        )
 
 @app.route('/export_csv')
 def export_csv():

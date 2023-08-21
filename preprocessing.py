@@ -5,13 +5,12 @@ import pandas as pd
 # Atribut A, B dan G didapat dari rata-rata gelombang Alpha beta dan Gamma
 
 def atribut_gelombang(data_mentah):
-    data_mentah['A']=(data_mentah['Alpha1']+data_mentah['Alpha2'])/2
-    data_mentah['B']=(data_mentah['Beta1']+data_mentah['Beta2'])/2
-    data_mentah['G']=(data_mentah['Gamma1']+data_mentah['Gamma2'])/2
+    data_mentah['A']=(data_mentah[' Alpha1']+data_mentah[' Alpha2'])/2
+    data_mentah['B']=(data_mentah[' Beta1']+data_mentah[' Beta2'])/2
+    data_mentah['G']=(data_mentah[' Gamma1']+data_mentah[' Gamma2'])/2    
     return data_mentah
 
 
-# print(atribut_gelombang(data_mentah))
 
 
 def normalisasi(data_mentah):
@@ -159,16 +158,19 @@ def gelombang_otak(data_mentah):
     }
 
 mentah=[
-    'data/AditHigh.csv',
-    'data/AditLow.csv',
-    'data/AhmadHigh.csv',
-    'data/AhmadLow.csv',
-    'data/AndiHigh.csv',
-    'data/AndiLow.csv',
-    'data/ArasHigh.csv',
-    'data/ArasLow.csv',
-    'data/JulHigh.csv',
-    'data/JulLow.csv',
+    'data/datafix/Anwar2.csv',
+    'data/datafix/AnwarHigh.csv',
+    'data/datafix/Ardi2.csv',
+    'data/datafix/ArdiHigh.csv',
+    'data/datafix/Asep2.csv',
+    'data/datafix/AsepHigh.csv',
+    'data/datafix/Indra2.csv',
+    'data/datafix/IndraHigh.csv',
+    'data/datafix/Teddy2.csv',
+    'data/datafix/TeddyHigh.csv',
+    'data/datafix/Zaenal2.csv',
+    'data/datafix/ZaenalHigh.csv',
+  
 
 ]
 

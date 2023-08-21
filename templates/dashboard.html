@@ -44,56 +44,7 @@
 
 <body data-topbar="dark" data-layout="horizontal">
 
-    <!-- Begin page -->
-    <div id="layout-wrapper">
-        <header id="page-topbar">
-            <div class="navbar-header">
-                <div class="d-flex">
-                    <!-- LOGO -->
-                    <div class="navbar-brand-box">
-                        <a class="navbar-brand mt-2 mt-lg-0" style="color: white;">
-                            Uji Konsentrasi
-                        </a>
-                    </div>
-
-                    <button type="button" class="btn btn-sm px-3 font-size-18 d-lg-none header-item" data-bs-toggle="collapse" data-bs-target="#topnav-menu-content">
-                        <i class="fa fa-fw fa-bars align-middle"></i>
-                    </button>
-                </div>
-
-                <div class="d-flex">
-                    {% if 'username' in session %}
-                    <div class="dropdown d-inline-block user-dropdown">
-                        <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {{ session['nama_pegawai'] }} <img class="rounded-circle header-profile-user" src="https://www.unikom.ac.id/img/logo_unikom_kuning.png" alt="Header Avatar">
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
-                            <div class="p-3">
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        <h6 class="m-0"> {{ session['nama_pegawai'] }} </h6>
-                                    </div>
-                                    <!-- <div class="col-auto">
-                                        <a class="small"> Available</a>
-                                    </div> -->
-                                </div>
-                            </div>
-                            <div class="pt-2">
-                                <div class="d-grid card-body">
-                                    <a class="btn btn-sm btn-light font-size-14 text-center" href="{{ url_for('login') }}">
-                                        <i class="ri-settings-4-line align-middle me-1"></i> Pengaturan
-                                    </a>
-                                    <a class="mt-2 btn btn-sm btn-danger font-size-14 text-center" href="{{ url_for('login') }}">
-                                        <i class="ri-shut-down-line align-middle me-1"></i> Logout
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {% endif %}
-                </div>
-            </div>
-        </header>
+    {% include 'navbar.html' %}
 
         <div class="main-content">
             <div class="page-content">
@@ -142,6 +93,8 @@
                                             <div class="result-container">
                                                 <h4>Result:</h4>
                                                 <p>{{ result }}</p> <!-- Change this to display specific elements of 'result' as needed -->
+                                            
+                                                
                                             </div>
                                             {% endif %}
 
@@ -183,6 +136,7 @@
                                                         <td>{{ data.tanggal }}</td>
                                                         <td>
                                                             <a href="#" data-toggle="modal" data-target="#modChart" data-uji="0.08185722, 0.09502756, 0.04491122, 0.06503574, 0.05635585, 0.03786717, 0.08185722, 0.09502756, 0.04491122" data-item="0.02269997, 0.01751783, 0.03700718, 0.04299396, 0.0460799, 0.03779127, 0.02269997, 0.01751783, 0.03700718">
+                                                                <!-- <a href="#" data-toggle="modal" data-target="#modChart" data-uji="{{ x }}" data-item="{{ y}}"></a> -->
                                                                 <span class="ri-bar-chart-2-line"></span> {{ data.nama_pegawai }}
                                                             </a>
                                                         </td>
@@ -222,35 +176,26 @@
     </div>
     <!-- END layout-wrapper -->
 
-    <!-- Modal -->
-    <div class="modal fade" id="modChart" tabindex="-1" role="dialog" aria-labelledby="Modal" aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modChart-modal-title" id="ModalLabel">Chart</h5>
-                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true"><span class="sr-only">Close</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <CENTER>
-                        <div class="chart-cell">
-                            <canvas id="canvas" width="1000" height="450"></canvas>
-                        </div><br>
-                    </CENTER>
-                    <div class="row">
-                        <div class="dataitem_arr text-danger"></div>
-                        <div class="datauji_arr"></div>
+    <div class="main-content">
+        <div class="page-content">
+            <div class="container-fluid">
+                <div class="row">                    
+                    <div class="col-25">
+                        <div class="card">                            
+                            <div class="card-body">
+                                <div class="table-responsive">                                    
+                                   {% include 'process.html'%}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    {% include 'detail.html' %}
 
-    <!-- Script untuk pencarian -->
-    <!-- <script src="{{url_for('static', filename='js/search.js')}}"></script> -->
-    <!-- <script src="{{url_for('static', filename='js/filter.js')}}"></script> -->
-
+   
     <script src="https://apps.multi.co.id/myassetv3/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="https://apps.multi.co.id/myassetv3/assets/libs/metismenu/metisMenu.min.js"></script>
     <script src="https://apps.multi.co.id/myassetv3/assets/libs/simplebar/simplebar.min.js"></script>
@@ -302,104 +247,7 @@
     
 
 
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#datatable').DataTable({
-                dom: "<'row'<'col-sm-4'l><'col-sm-5 text-center'B><'col-sm-3'f>>" +
-                    "<'row'<'col-sm-12'tr>>" +
-                    "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-
-                stateSave: true,
-
-                buttons: [{
-                        extend: 'copy',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6]
-                        }
-                    },
-                    {
-                        extend: 'excel',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6]
-                        }
-                    },
-                    {
-                        extend: 'pdf',
-                        orientation: 'landscape',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6]
-                        }
-                    },
-                    {
-                        extend: 'print',
-                        orientation: 'landscape',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6]
-                        }
-                    },
-                ],
-            });
-        });
-    </script>
-
-    <script>
-        $('#modChart').on('shown.bs.modal', function(event) {
-            var link = $(event.relatedTarget);
-            // get data source
-            var dataUji = link.attr('data-uji').split(',');
-
-            // get title
-            var title = link.html();
-
-            // get labels
-            var labels = ['rA', 'rB', 'rG', 'stdA', 'stdB', 'stdG', 'absA', 'absB', 'absG'];
-
-            // get target source
-            var dataItem = link.attr('data-item').split(',');
-
-            $.each(labels, function(index, value) {
-                var a = dataItem.push();
-            });
-            var a = $('.dataitem_arr').html('Data Item = [' + link.attr('data-uji') + ']');
-            var a = $('.datauji_arr').html('Data Uji = [' + link.attr('data-item') + ']');
-
-
-
-            // Chart initialisieren
-            var modal = $(this);
-            var canvas = modal.find('.modal-body canvas');
-            modal.find('.modChart-modal-title').html(title);
-            var ctx = canvas[0].getContext("2d");
-            var chart = new Chart(ctx).Line({
-                responsive: true,
-                labels: labels,
-                datasets: [{
-                    fillColor: "rgba(151,187,205,0.2)",
-                    strokeColor: "rgba(151,187,205,1)",
-                    pointColor: "rgba(151,187,205,1)",
-                    pointStrokeColor: "#fff",
-                    pointHighlightFill: "#fff",
-                    pointHighlightStroke: "rgba(151,187,205,1)",
-                    data: dataUji
-                }, {
-                    fillColor: "rgba(220,220,220,0.2)",
-                    strokeColor: "#F7464A",
-                    pointColor: "#FF5A5E",
-                    pointStrokeColor: "#FF5A5E",
-                    pointHighlightFill: "#fff",
-                    pointHighlightStroke: "red",
-                    data: dataItem
-                }]
-            }, {});
-        }).on('hidden.bs.modal', function(event) {
-            // reset canvas size
-            var modal = $(this);
-            var canvas = modal.find('.modal-body canvas');
-            canvas.attr('width', '1000px').attr('height', '450px');
-            // destroy modal
-            $(this).data('bs.modal', null);
-        });
-    </script>
+    
 
 </body>
 

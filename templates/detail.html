@@ -1,0 +1,123 @@
+<!-- Modal -->
+
+<div class="modal fade" id="modChart" tabindex="-1" role="dialog" aria-labelledby="Modal" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modChart-modal-title" id="ModalLabel">Chart</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><span class="sr-only">Close</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <CENTER>
+                    <div class="chart-cell">
+                        <canvas id="canvas" width="1000" height="450"></canvas>
+                    </div><br>
+                </CENTER>
+                <div class="row">
+                    <div class="dataitem_arr text-danger"></div>
+                    <div class="datauji_arr"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#datatable').DataTable({
+            dom: "<'row'<'col-sm-4'l><'col-sm-5 text-center'B><'col-sm-3'f>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+
+            stateSave: true,
+
+            buttons: [{
+                    extend: 'copy',
+                    exportOptions: {
+                        columns: [0, 1, 2, 3, 4, 5, 6]
+                    }
+                },
+                {
+                    extend: 'excel',
+                    exportOptions: {
+                        columns: [0, 1, 2, 3, 4, 5, 6]
+                    }
+                },
+                {
+                    extend: 'pdf',
+                    orientation: 'landscape',
+                    exportOptions: {
+                        columns: [0, 1, 2, 3, 4, 5, 6]
+                    }
+                },
+                {
+                    extend: 'print',
+                    orientation: 'landscape',
+                    exportOptions: {
+                        columns: [0, 1, 2, 3, 4, 5, 6]
+                    }
+                },
+            ],
+        });
+    });
+</script>
+
+<script>
+    $('#modChart').on('shown.bs.modal', function(event) {
+        var link = $(event.relatedTarget);
+        // get data source
+        var dataUji = link.attr('data-uji').split(',');
+
+        // get title
+        var title = link.html();
+
+        // get labels
+        var labels = ['rA', 'rB', 'rG', 'stdA', 'stdB', 'stdG', 'absA', 'absB', 'absG'];
+
+        // get target source
+        var dataItem = link.attr('data-item').split(',');
+
+        $.each(labels, function(index, value) {
+            var a = dataItem.push();
+        });
+        var a = $('.dataitem_arr').html('Data Item = [' + link.attr('data-uji') + ']');
+        var a = $('.datauji_arr').html('Data Uji = [' + link.attr('data-item') + ']');
+
+
+
+        // Chart initialisieren
+        var modal = $(this);
+        var canvas = modal.find('.modal-body canvas');
+        modal.find('.modChart-modal-title').html(title);
+        var ctx = canvas[0].getContext("2d");
+        var chart = new Chart(ctx).Line({
+            responsive: true,
+            labels: labels,
+            datasets: [{
+                fillColor: "rgba(151,187,205,0.2)",
+                strokeColor: "rgba(151,187,205,1)",
+                pointColor: "rgba(151,187,205,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(151,187,205,1)",
+                data: dataUji
+            }, {
+                fillColor: "rgba(220,220,220,0.2)",
+                strokeColor: "#F7464A",
+                pointColor: "#FF5A5E",
+                pointStrokeColor: "#FF5A5E",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "red",
+                data: dataItem
+            }]
+        }, {});
+    }).on('hidden.bs.modal', function(event) {
+        // reset canvas size
+        var modal = $(this);
+        var canvas = modal.find('.modal-body canvas');
+        canvas.attr('width', '1000px').attr('height', '450px');
+        // destroy modal
+        $(this).data('bs.modal', null);
+    });
+</script>

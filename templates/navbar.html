@@ -1,44 +1,50 @@
+<!-- Begin page -->
+<div id="layout-wrapper">
+  <header id="page-topbar">
+      <div class="navbar-header">
+          <div class="d-flex">
+              <!-- LOGO -->
+              <div class="navbar-brand-box">
+                  <a class="navbar-brand mt-2 mt-lg-0" style="color: white;">
+                      Uji Konsentrasi
+                  </a>
+              </div>
 
+              <button type="button" class="btn btn-sm px-3 font-size-18 d-lg-none header-item" data-bs-toggle="collapse" data-bs-target="#topnav-menu-content">
+                  <i class="fa fa-fw fa-bars align-middle"></i>
+              </button>
+          </div>
 
- <!-- Navbar -->
- <nav class="navbar navbar-expand-lg navbar-light bg-light" style="box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.15);">
-    <!-- Container wrapper -->
-    <div class="container-fluid">
-      <!-- Toggle button -->
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-mdb-toggle="collapse"
-        data-mdb-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <i class="fas fa-bars"></i>
-      </button>
-  
-      <!-- Collapsible wrapper -->
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <!-- Navbar brand -->
-        <a class="navbar-brand mt-2 mt-lg-0" >
-            Uji Konsentrasi
-        </a>
-       
-    </div>
-    
-    
-    <!-- Right elements -->
-    <div class="d-flex align-items-center">        
-        {% if 'username' in session %}
-        <div class="navbar-brand me-2 mt-lg-0">
-            {{ session['nama_pegawai'] }}
-        </div>
-        <a class="navbar-brand me-2 mt-lg-0" href="{{ url_for('login') }}">
-            Logout
-        </a>
-        {% endif %}
-    </div>
-      
-    </div>
-    
-  </nav>
+          <div class="d-flex">
+              {% if 'username' in session %}
+              <div class="dropdown d-inline-block user-dropdown">
+                  <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      {{ session['nama_pegawai'] }} <img class="rounded-circle header-profile-user" src="https://www.unikom.ac.id/img/logo_unikom_kuning.png" alt="Header Avatar">
+                  </button>
+                  <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
+                      <div class="p-3">
+                          <div class="row align-items-center">
+                              <div class="col">
+                                  <h6 class="m-0"> {{ session['nama_pegawai'] }} </h6>
+                              </div>
+                              <!-- <div class="col-auto">
+                                  <a class="small"> Available</a>
+                              </div> -->
+                          </div>
+                      </div>
+                      <div class="pt-2">
+                          <div class="d-grid card-body">
+                              <a class="btn btn-sm btn-light font-size-14 text-center" href="{{ url_for('login') }}">
+                                  <i class="ri-settings-4-line align-middle me-1"></i> Pengaturan
+                              </a>
+                              <a class="mt-2 btn btn-sm btn-danger font-size-14 text-center" href="{{ url_for('login') }}">
+                                  <i class="ri-shut-down-line align-middle me-1"></i> Logout
+                              </a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              {% endif %}
+          </div>
+      </div>
+  </header>

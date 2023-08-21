@@ -1,0 +1,269 @@
+{% set z= output_atribut|length %}
+<!-- DataTables -->
+<link href="https://apps.multi.co.id/myassetv3/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="https://apps.multi.co.id/myassetv3/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="https://apps.multi.co.id/myassetv3/assets/libs/datatables.net-select-bs4/css/select.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+
+<h1 style="text-align: center;">Proses</h1>
+<h3>Data Mentah</h3>
+    
+
+<table id="datatable1" class="table table-bordered" style="width: 100%;">
+    <tr>
+        <th>obs</th>
+        <th>Time</th>
+        <th>Delta</th>
+        <th>Theta</th>
+        <th>Alpha1</th>
+        <th>Alpha2</th>
+        <th>Beta1</th>
+        <th>Beta2</th>
+        <th>Gamma1</th>
+        <th>Gamma2</th>
+        <th>Attention</th>
+        <!-- <th>Meditation</th> -->
+        <!-- <th>Derived</th> -->
+        <!-- <th>totPwr</th>
+        <th>Class</th> -->
+        
+        
+    </tr>
+    {% for row in range(z) %}
+        <tr>
+            <td>{{ output_atribut['obs'][row] }}</td>
+            <td>{{ output_atribut[' time'][row] }}</td>
+            <td>{{ output_atribut[' Delta'][row] }}</td>
+            <td>{{ output_atribut[' Alpha1'][row] }}</td>
+            <td>{{ output_atribut[' Alpha2'][row] }}</td>
+            <td>{{ output_atribut[' Beta1'][row] }}</td>
+            <td>{{ output_atribut[' Beta2'][row] }}</td>
+            <td>{{ output_atribut[' Gamma1'][row] }}</td>
+            <td>{{ output_atribut[' Gamma2'][row] }}</td>
+            <td>{{ output_atribut[' Attention'][row] }}</td>
+            <td>{{ output_atribut[' Meditation'][row] }}</td>
+            <!-- <td>{{ output_atribut[' Derived'][row] }}</td>
+            <td>{{ output_atribut[' totPwr'][row] }}</td> -->
+            
+            
+        </tr>
+    {% endfor %}
+</table>
+
+
+<h3>Penambahan Atribut</h3>
+    <p>Alpha = Alpha1 + Alpha2</p>
+    <p>Alpha = {{ output_atribut[' Alpha1'][0] }} + {{ output_atribut[' Alpha2'][0] }}</p>
+    <p>Alpha = {{ output_atribut['A'][0] }}</p>
+<table id="datatable" class="table table-bordered" style="width: 100%;">
+    <tr>
+        <th>obs</th>
+        <th>Time</th>
+        <th>Delta</th>
+        <th>Theta</th>
+        <th>Alpha1</th>
+        <th>Alpha2</th>
+        <th>Beta1</th>
+        <th>Beta2</th>
+        <th>Gamma1</th>
+        <th>Gamma2</th>
+        <th>Attention</th>
+        <!-- <th>Meditation</th> -->
+        <!-- <th>Derived</th> -->
+        <!-- <th>totPwr</th>
+        <th>Class</th> -->
+        <th>A</th>
+        <th>B</th>
+        <th>G</th>
+        
+        
+    </tr>
+    {% for row in range(z) %}
+        <tr>
+            <td>{{ output_atribut['obs'][row] }}</td>
+            <td>{{ output_atribut[' time'][row] }}</td>
+            <td>{{ output_atribut[' Delta'][row] }}</td>
+            <td>{{ output_atribut[' Alpha1'][row] }}</td>
+            <td>{{ output_atribut[' Alpha2'][row] }}</td>
+            <td>{{ output_atribut[' Beta1'][row] }}</td>
+            <td>{{ output_atribut[' Beta2'][row] }}</td>
+            <td>{{ output_atribut[' Gamma1'][row] }}</td>
+            <td>{{ output_atribut[' Gamma2'][row] }}</td>
+            <td>{{ output_atribut[' Attention'][row] }}</td>
+            <td>{{ output_atribut[' Meditation'][row] }}</td>
+            <!-- <td>{{ output_atribut[' Derived'][row] }}</td>
+            <td>{{ output_atribut[' totPwr'][row] }}</td> -->
+            
+            <td>{{ output_atribut['A'][row] }}</td>
+            <td>{{ output_atribut['B'][row] }}</td>
+            <td>{{ output_atribut['G'][row] }}</td>
+            
+            
+        </tr>
+    {% endfor %}
+</table>
+
+
+<h3>Normalisasi</h3>   
+    <p>Nilai Min dan Max A dari data ke 11 hingga 70</p>
+    {% set filter_data= output_atribut.loc[10:69] %}
+    <p>min_A={{ filter_data['A'].min() }} </p>
+    <p>max_A={{ filter_data['A'].max() }} </p>
+    
+    <p>An=(A-min_A)/(max_A-minA)</p>
+    <p>An=({{output_atribut['A'][0]}}-{{ filter_data['A'].min() }})/({{ filter_data['A'].max() }}-{{ filter_data['A'].min() }})</p>
+
+<table id="datatable" class="table table-bordered" style="width: 100%;">
+    <tr>
+        <th>obs</th>
+        <th>Time</th>
+        <th>Delta</th>
+        <th>Theta</th>
+        <th>Alpha1</th>
+        <th>Alpha2</th>
+        <th>Beta1</th>
+        <th>Beta2</th>
+        <th>Gamma1</th>
+        <th>Gamma2</th>
+        <th>Attention</th>
+        <!-- <th>Meditation</th> -->
+        <!-- <th>Derived</th> -->
+        <!-- <th>totPwr</th>
+        <th>Class</th> -->
+        <th>A</th>
+        <th>B</th>
+        <th>G</th>
+        <th>An</th>
+        <th>Bn</th>
+        <th>Gn</th>
+        
+        
+    </tr>
+    {% for row in range(z) %}
+        <tr>
+            <td>{{ output_atribut['obs'][row] }}</td>
+            <td>{{ output_atribut[' time'][row] }}</td>
+            <td>{{ output_atribut[' Delta'][row] }}</td>
+            <td>{{ output_atribut[' Alpha1'][row] }}</td>
+            <td>{{ output_atribut[' Alpha2'][row] }}</td>
+            <td>{{ output_atribut[' Beta1'][row] }}</td>
+            <td>{{ output_atribut[' Beta2'][row] }}</td>
+            <td>{{ output_atribut[' Gamma1'][row] }}</td>
+            <td>{{ output_atribut[' Gamma2'][row] }}</td>
+            <td>{{ output_atribut[' Attention'][row] }}</td>
+            <td>{{ output_atribut[' Meditation'][row] }}</td>
+            <!-- <td>{{ output_atribut[' Derived'][row] }}</td>
+            <td>{{ output_atribut[' totPwr'][row] }}</td> -->
+            
+            <td>{{ output_atribut['A'][row] }}</td>
+            <td>{{ output_atribut['B'][row] }}</td>
+            <td>{{ output_atribut['G'][row] }}</td>
+            <td>{{ output_atribut['An'][row] }}</td>
+            <td>{{ output_atribut['Bn'][row] }}</td>
+            <td>{{ output_atribut['Gn'][row] }}</td>
+            
+            
+        </tr>
+    {% endfor %}
+</table>
+
+<h3>Ekstraksi</h3>
+<table id="datatable" class="table table-bordered" style="width: 100%;">
+    <tr>
+        <th>obs</th>
+        <th>Time</th>
+        <th>Delta</th>
+        <th>Theta</th>
+        <th>Alpha1</th>
+        <th>Alpha2</th>
+        <th>Beta1</th>
+        <th>Beta2</th>
+        <th>Gamma1</th>
+        <th>Gamma2</th>
+        <th>Attention</th>
+        <!-- <th>Meditation</th> -->
+        <!-- <th>Derived</th> -->
+        <!-- <th>totPwr</th>
+        <th>Class</th> -->
+        <th>A</th>
+        <th>B</th>
+        <th>G</th>
+        <th>An</th>
+        <th>Bn</th>
+        <th>Gn</th>
+        <th>Ae</th>
+        <th>Be</th>
+        <th>Ge</th>
+        
+        
+    </tr>
+    {% for row in range(z) %}
+        <tr>
+            <td>{{ output_atribut['obs'][row] }}</td>
+            <td>{{ output_atribut[' time'][row] }}</td>
+            <td>{{ output_atribut[' Delta'][row] }}</td>
+            <td>{{ output_atribut[' Alpha1'][row] }}</td>
+            <td>{{ output_atribut[' Alpha2'][row] }}</td>
+            <td>{{ output_atribut[' Beta1'][row] }}</td>
+            <td>{{ output_atribut[' Beta2'][row] }}</td>
+            <td>{{ output_atribut[' Gamma1'][row] }}</td>
+            <td>{{ output_atribut[' Gamma2'][row] }}</td>
+            <td>{{ output_atribut[' Attention'][row] }}</td>
+            <td>{{ output_atribut[' Meditation'][row] }}</td>
+            <!-- <td>{{ output_atribut[' Derived'][row] }}</td>
+            <td>{{ output_atribut[' totPwr'][row] }}</td> -->
+            
+            <td>{{ output_atribut['A'][row] }}</td>
+            <td>{{ output_atribut['B'][row] }}</td>
+            <td>{{ output_atribut['G'][row] }}</td>
+            <td>{{ output_atribut['An'][row] }}</td>
+            <td>{{ output_atribut['Bn'][row] }}</td>
+            <td>{{ output_atribut['Gn'][row] }}</td>
+            <td>{{ output_atribut['Ae'][row] }}</td>
+            <td>{{ output_atribut['Be1'][row] }}</td>
+            <td>{{ output_atribut['Ge'][row] }}</td>
+            
+            
+        </tr>
+    {% endfor %}
+</table>
+             
+<script>
+    $(document).ready(function() {
+            $('#datatable1').DataTable({
+                dom: "<'row'<'col-sm-4'l><'col-sm-5 text-center'B><'col-sm-3'f>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+
+                stateSave: true,
+
+                buttons: [{
+                        extend: 'copy',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5, 6]
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5, 6]
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        orientation: 'landscape',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5, 6]
+                        }
+                    },
+                    {
+                        extend: 'print',
+                        orientation: 'landscape',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5, 6]
+                        }
+                    },
+                ],
+            });
+        });
+
+</script>

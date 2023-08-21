@@ -1,4 +1,4 @@
-obs,time,Delta,Theta,Alpha1,Alpha2,Beta1,Beta2,Gamma1,Gamma2,Attention,Meditation,Derived,totPwr,class 
+obs, time, Delta, Theta, Alpha1, Alpha2, Beta1, Beta2, Gamma1, Gamma2, Attention, Meditation, Derived, totPwr, class 
 1,2.03,123728,86624,30076,6889,12669,154182,32786,806,48,57,NA,447760,*
 2,3.03,431663,48516,12722,3414,10119,37473,22075,2631,53,50,NA,568613,*
 3,5.03,11843,35751,2586,3815,6226,43594,3721,973,51,40,NA,108509,*
