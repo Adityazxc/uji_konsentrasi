@@ -5,9 +5,9 @@ import pandas as pd
 # Atribut A, B dan G didapat dari rata-rata gelombang Alpha beta dan Gamma
 
 def atribut_gelombang(data_mentah):
-    data_mentah['A']=(data_mentah[' Alpha1']+data_mentah[' Alpha2'])/2
-    data_mentah['B']=(data_mentah[' Beta1']+data_mentah[' Beta2'])/2
-    data_mentah['G']=(data_mentah[' Gamma1']+data_mentah[' Gamma2'])/2    
+    data_mentah['A']=round((data_mentah[' Alpha1']+data_mentah[' Alpha2'])/2,3)
+    data_mentah['B']=round((data_mentah[' Beta1']+data_mentah[' Beta2'])/2,3)
+    data_mentah['G']=round((data_mentah[' Gamma1']+data_mentah[' Gamma2'])/2,3)    
     return data_mentah
 
 
@@ -30,9 +30,9 @@ def normalisasi(data_mentah):
     min_G=filter_data['G'].min()
     max_G=filter_data['G'].max()
 
-    data_mentah['An']=(data_mentah['A']-min_A)/(max_A-min_A)
-    data_mentah['Bn']=(data_mentah['B']-min_B)/(max_B-min_B)
-    data_mentah['Gn']=(data_mentah['G']-min_G)/(max_G-min_G)
+    data_mentah['An']=round((data_mentah['A']-min_A)/(max_A-min_A),3)
+    data_mentah['Bn']=round((data_mentah['B']-min_B)/(max_B-min_B),3)
+    data_mentah['Gn']=round((data_mentah['G']-min_G)/(max_G-min_G),3)
     return data_mentah
 
 # normalisasi(data_mentah)
@@ -61,8 +61,8 @@ def ekstraksi_gelombang(data_mentah):
         for _ in range(4):
             a1 = (a1 * low_h0) + (a1 * low_h1) 
             a2 = (a2 * low_h2) + (a2 * low_h3)
-        a1 = (a1 * high_h0) + (a1 * high_h1) 
-        a2 = (a2 * high_h2) + (a2 * high_h3)    
+        a1 = round((a1 * high_h0) + (a1 * high_h1),3)
+        a2 = round((a2 * high_h2) + (a2 * high_h3),3)    
         return a1 + a2
 
     # Ekstraksi Betalow
@@ -72,8 +72,8 @@ def ekstraksi_gelombang(data_mentah):
         for _ in range(3):
             a1 = (a1 * low_h0) + (a1 * low_h1) 
             a2 = (a2 * low_h2) + (a2 * low_h3)
-        a1 = (a1 * high_h0) + (a1 * high_h1) 
-        a2 = (a2 * high_h2) + (a2 * high_h3) 
+        a1 = round((a1 * high_h0) + (a1 * high_h1) ,3)
+        a2 = round((a2 * high_h2) + (a2 * high_h3) ,3)
         return a1 + a2
 
     # Ekstraksi BetaHigh
@@ -83,8 +83,8 @@ def ekstraksi_gelombang(data_mentah):
         for _ in range(4):
             a1 = (a1 * low_h0) + (a1 * low_h1) 
             a2 = (a2 * low_h2) + (a2 * low_h3)
-        a1 = (a1 * high_h0) + (a1 * high_h1) 
-        a2 = (a2 * high_h2) + (a2 * high_h3)  
+        a1 = round((a1 * high_h0) + (a1 * high_h1),3) 
+        a2 = round((a2 * high_h2) + (a2 * high_h3) ,3) 
         return a1 + a2
         
     # Ekstraksi Gamma
@@ -94,8 +94,8 @@ def ekstraksi_gelombang(data_mentah):
         for _ in range(2):
             a1 = (a1 * low_h0) + (a1 * low_h1) 
             a2 = (a2 * low_h2) + (a2 * low_h3)
-        a1 = (a1 * high_h0) + (a1 * high_h1) 
-        a2 = (a2 * high_h2) + (a2 * high_h3)  
+        a1 = round((a1 * high_h0) + (a1 * high_h1),3) 
+        a2 =round( (a2 * high_h2) + (a2 * high_h3) ,3) 
         return a1 + a2
 
     # Ekstraksi gelombang untuk setiap kolom
@@ -116,21 +116,21 @@ def gelombang_otak(data_mentah):
 
     #mengisi nilai rata-rata
 
-    rA=data_bersih['Ae'].mean()
-    rB=data_bersih['Be1'].mean()
-    rG=data_bersih['Ge'].mean()
+    rA=round(data_bersih['Ae'].mean(),3)
+    rB=round(data_bersih['Be1'].mean(),3)
+    rG=round(data_bersih['Ge'].mean(),3)
 
     #mengisi nilai standar deviasi
 
-    stdA = data_bersih['Ae'].std().mean()
-    stdB = data_bersih['Be1'].std().mean()
-    stdG = data_bersih['Ge'].std().mean()
+    stdA = round(data_bersih['Ae'].std().mean(),3)
+    stdB = round(data_bersih['Be1'].std().mean(),3)
+    stdG = round(data_bersih['Ge'].std().mean(),3)
 
     #mengisi nilai absolute
 
-    absA=data_bersih['Ae'].abs().mean()
-    absB=data_bersih['Be1'].abs().mean()
-    absG=data_bersih['Ge'].abs().mean()
+    absA=round(data_bersih['Ae'].abs().mean(),3)
+    absB=round(data_bersih['Be1'].abs().mean(),3)
+    absG=round(data_bersih['Ge'].abs().mean(),3)
     
     # target
     def data_target(rA,rB):
@@ -168,8 +168,8 @@ mentah=[
     'data/datafix/IndraHigh.csv',
     'data/datafix/Teddy2.csv',
     'data/datafix/TeddyHigh.csv',
-    'data/datafix/Zaenal2.csv',
-    'data/datafix/ZaenalHigh.csv',
+    # 'data/datafix/Zaenal2.csv',
+    # 'data/datafix/ZaenalHigh.csv',
   
 
 ]
@@ -190,6 +190,7 @@ def persiapan_data(df):
     ekstraksi_gelombang(df)
     hasil=gelombang_otak(df)
     return hasil
+
 
 for data in mentah:
     hasil_data=pd.read_csv(data)

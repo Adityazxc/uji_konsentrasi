@@ -113,7 +113,7 @@
                                     <h4 class="card-title text-center">History</h4>
                                     <div class="row">
                                         <div class="table-responsive">
-                                            <table id="datatable" class="table table-bordered" style="width: 100%;">
+                                            <table id="datatable" class="table table-bordered data-table" style="width: 100%;">
                                                 <thead>
                                                     <tr>
                                                         <th>No</th>
@@ -183,8 +183,11 @@
                     <div class="col-25">
                         <div class="card">                            
                             <div class="card-body">
-                                <div class="table-responsive">                                    
+                                <div class="table-responsive">   
+                                    {% if result %}                                 
                                    {% include 'process.html'%}
+
+                                   {% endif %}
                                 </div>
                             </div>
                         </div>
