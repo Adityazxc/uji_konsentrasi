@@ -35,8 +35,7 @@ def normalisasi(data_mentah):
     data_mentah['Gn']=round((data_mentah['G']-min_G)/(max_G-min_G),3)
     return data_mentah
 
-# normalisasi(data_mentah)
-# print(data_mentah)
+
 
 import math
 
@@ -56,47 +55,35 @@ def ekstraksi_gelombang(data_mentah):
 
     # Ekstraksi Alpha
     def ekstraksi_Alpha(data, high_h0, high_h1, high_h2, high_h3, low_h0, low_h1, low_h2, low_h3):
-        a1 = data
-        a2 = data
+        result = data        
         for _ in range(4):
-            a1 = (a1 * low_h0) + (a1 * low_h1) 
-            a2 = (a2 * low_h2) + (a2 * low_h3)
-        a1 = round((a1 * high_h0) + (a1 * high_h1),3)
-        a2 = round((a2 * high_h2) + (a2 * high_h3),3)    
-        return a1 + a2
+            result = (result * low_h0) + (result * low_h1) + (result * low_h2) + (result * low_h3)
+        result = (result * high_h0) + (result * high_h1) + (result * high_h2) + (result * high_h3)
+        return round(result,3)
 
     # Ekstraksi Betalow
     def ekstraksi_Betalow(data, high_h0, high_h1, high_h2, high_h3, low_h0, low_h1, low_h2, low_h3):
-        a1 = data
-        a2 = data
+        result = data        
         for _ in range(3):
-            a1 = (a1 * low_h0) + (a1 * low_h1) 
-            a2 = (a2 * low_h2) + (a2 * low_h3)
-        a1 = round((a1 * high_h0) + (a1 * high_h1) ,3)
-        a2 = round((a2 * high_h2) + (a2 * high_h3) ,3)
-        return a1 + a2
+            result = (result * low_h0) + (result * low_h1) + (result * low_h2) + (result * low_h3)
+        result = (result * high_h0) + (result * high_h1) + (result * high_h2) + (result * high_h3)
+        return round(result,3)
 
     # Ekstraksi BetaHigh
     def ekstraksi_BetaHigh(data, high_h0, high_h1, high_h2, high_h3, low_h0, low_h1, low_h2, low_h3):
-        a1 = data
-        a2 = data
+        result = data        
         for _ in range(4):
-            a1 = (a1 * low_h0) + (a1 * low_h1) 
-            a2 = (a2 * low_h2) + (a2 * low_h3)
-        a1 = round((a1 * high_h0) + (a1 * high_h1),3) 
-        a2 = round((a2 * high_h2) + (a2 * high_h3) ,3) 
-        return a1 + a2
+            result = (result * low_h0) + (result * low_h1) + (result * low_h2) + (result * low_h3)
+        result = (result * high_h0) + (result * high_h1) + (result * high_h2) + (result * high_h3)
+        return round(result,3)
         
     # Ekstraksi Gamma
     def ekstraksi_Gamma(data, high_h0, high_h1, high_h2, high_h3, low_h0, low_h1, low_h2, low_h3):
-        a1 = data
-        a2 = data
+        result = data        
         for _ in range(2):
-            a1 = (a1 * low_h0) + (a1 * low_h1) 
-            a2 = (a2 * low_h2) + (a2 * low_h3)
-        a1 = round((a1 * high_h0) + (a1 * high_h1),3) 
-        a2 =round( (a2 * high_h2) + (a2 * high_h3) ,3) 
-        return a1 + a2
+            result = (result * low_h0) + (result * low_h1) + (result * low_h2) + (result * low_h3)
+        result = (result * high_h0) + (result * high_h1) + (result * high_h2) + (result * high_h3)
+        return round(result,3)
 
     # Ekstraksi gelombang untuk setiap kolom
     data_mentah['Ae'] = ekstraksi_Alpha(data_mentah['An'], high_h0, high_h1, high_h2, high_h3, low_h0, low_h1, low_h2, low_h3)

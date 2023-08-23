@@ -8,12 +8,17 @@ from werkzeug.utils import secure_filename
 from lvq import LVQ, main
 from datetime import datetime
 from connection import Pengguna, get_nama_pegawai_from_database, db, GelombangOtak, app,db
-
+import csv
 
 
 app.secret_key = 'your_actual_secret_key_here'
 ob=LVQ()
 
+expected_attributes = [
+    'obs', ' time', ' Delta', ' Theta', ' Alpha1', ' Alpha2', ' Beta1', 
+    ' Beta2', ' Gamma1', ' Gamma2', ' Attention', ' Meditation', 
+    ' Derived', ' totPwr', ' class'
+]
 
 # Fungsi untuk mengambil data dari tabel dan menyimpan sebagai CSV
 def export_to_csv():
@@ -21,7 +26,7 @@ def export_to_csv():
     data_list = [{  'id_gelombang': row.id_gelombang, 
                     'nip': row.nip, 
                     'nama_pegawai': row.nama_pegawai,
-                    'departemen':row.departemen,
+                    # 'departemen':row.departemen,
                     'rA': row.rA,
                     'rB': row.rB,
                     'rG': row.rG,
@@ -86,32 +91,35 @@ def upload_csv():
     result = None    
     output_atribut = None
     processed_data=None
-   
+    item=None
+    
     data_gelombang_otak=GelombangOtak.query.all()  
-    x=[0.08185722, 0.09502756, 0.04491122, 0.06503574, 0.05635585,
-       0.03786717, 0.08185722, 0.09502756, 0.04491122] 
-    y=[0.02269997, 0.01751783, 0.03700718, 0.04299396, 0.0460799 ,
-        0.03779127, 0.02269997, 0.01751783, 0.03700718]
+    
             
 
     if request.method == 'POST':
        
         uploaded_file = request.files.get('csv_file')
+        csvheader=csv.reader('csv_file')
+        header= next(csvheader)
 
         if uploaded_file:
             tanggal = datetime.now().strftime("%Y-%m-%d %H:%M:%S")            
             _, data_file_path = process_uploaded_file(uploaded_file)
             uploaded_df = pd.read_csv(data_file_path, encoding='unicode_escape')
 
-            if len(uploaded_df) < 70:
-                response_message = "Data kurang dari 70"
+            if len(uploaded_df) < 80:
+                response_message = "Data kurang dari 80 "
+
+            # elif header != expected_attributes:
+            #      response_message = "Format header tidak sesuai coba periksa kembali " 
             else:
                 # proses upload data hasil ke database
                 output_atribut=atribut_gelombang(uploaded_df)                
                 processed_data = persiapan_data(uploaded_df)
                 input_nip=request.form.get('nip')
                 input_nama=request.form.get('nama_pegawai')
-                input_departemen=request.form.get('departemen')
+                # input_departemen=request.form.get('departemen')
 
                 # pengambilan data latih
                 
@@ -144,7 +152,7 @@ def upload_csv():
                 item = {
                     'nip': input_nip,
                     'nama_pegawai':input_nama,
-                    'departemen':input_departemen,
+                    # 'departemen':input_departemen,
                     'rA': processed_data['rA'],
                     'rB': processed_data['rB'],
                     'rG': processed_data['rG'],
@@ -168,15 +176,14 @@ def upload_csv():
     
     return render_template(
         'dashboard.html',
-        hasil=hasil,
-        x=x,y=y,
+        hasil=hasil,        
         data=data_gelombang_otak,
         response_message=response_message,
         result=result,
         output_atribut=output_atribut,        
         processed_data=processed_data,
-        data_latih=data_latih
-
+        data_latih=data_latih,
+        item=item
         )
 
 @app.route('/export_csv')
@@ -185,12 +192,12 @@ def export_csv():
     df = pd.DataFrame([{
         'NIP': data.nip,
         'Nama Pegawai': data.nama_pegawai,
-        'Departemen': data.departemen,
+        # 'Departemen': data.departemen,
         'Tingkat Konsentrasi': data.tingkat_konsentrasi,
         'Tanggal': data.tanggal
     } for data in data_gelombang_otak])
     
-    csv_output = df.to_csv(index=False, columns=['NIP', 'Nama Pegawai', 'Departemen', 'Tingkat Konsentrasi', 'Tanggal'])
+    csv_output = df.to_csv(index=False, columns=['NIP', 'Nama Pegawai', 'Tingkat Konsentrasi', 'Tanggal'])
     
     response = Response(
         csv_output,

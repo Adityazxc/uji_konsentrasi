@@ -6,12 +6,12 @@ from datetime import datetime
 app = Flask(__name__)
 app.secret_key = 'your_actual_secret_key_here'
 # Konfigurasi database URI
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://Aditya:Aditya@localhost/konsentrasi'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://Aditya:Aditya@localhost/konsentrasi'
 
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:password_baru@localhost/konsentrasi'
 
 # aktifkan sebelum deploy
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:root@172.17.0.2:3306/konsentrasi'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:root@172.17.0.2:3306/konsentrasi'
 db = SQLAlchemy(app)
 
 # Definisi model untuk tabel database (pengguna)
@@ -32,9 +32,8 @@ def get_nama_pegawai_from_database(nip):
 class GelombangOtak(db.Model):
     __tablename__ = 'gelombang_otak' 
     id_gelombang=db.Column(db.Integer, primary_key=True)    
-    nip=db.Column(db.Integer())    
-    nama_pegawai=db.Column(db.String(100))
-    departemen=db.Column(db.String(100))
+    nip = db.Column(db.String(100)) 
+    nama_pegawai=db.Column(db.String(100))    
     rA=db.Column(db.Float())
     rB=db.Column(db.Float())
     rG=db.Column(db.Float())

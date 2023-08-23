@@ -43,8 +43,49 @@
 
 
 <body data-topbar="dark" data-layout="horizontal">
-
+    
     {% include 'navbar.html' %}
+
+    
+    
+    <!-- <div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="loadingModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="text-center">
+                        <div class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                        <p class="mt-2">Sending data...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            // Fungsi untuk menampilkan modal loading
+            function showLoadingModal() {
+                $('#loadingModal').modal('show');
+            }
+    
+            // Fungsi untuk menyembunyikan modal loading
+            function hideLoadingModal() {
+                $('#loadingModal').modal('hide');
+            }
+    
+            // Fungsi untuk mengirim data saat tombol "Uji Sekarang" ditekan
+            $('#uji-sekarang-button').click(function() {
+                showLoadingModal(); // Tampilkan modal loading sebelum mengirim data
+    
+                // Lakukan pengiriman data di sini
+                // Contoh: $.post('url', data, function(response) {...});
+    
+                // Setelah pengiriman data selesai, sembunyikan modal loading
+                hideLoadingModal();
+            });
+        });
+    </script> -->
 
         <div class="main-content">
             <div class="page-content">
@@ -54,29 +95,29 @@
                         <div class="col-4">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="card-title text-center">Uji Tingkat Konsentrasi</h4>
+                                    <h4 style="text-align: center;">Uji Tingkat Konsentrasi</h4>                                    
                                     <!-- form login -->
                                     <form method="post" enctype="multipart/form-data" action="{{url_for('upload_csv')}}">
                                         <div class="mb-3">
                                             <label for="nip" class="form-label">NIK</label>
-                                            <input type="text" class="form-control" id="nip" name="nip" placeholder="Masukkan NIP" pattern="[0-9]{1,8}" title="NIP Harus terdiri dari angka dan maksimal 8 karakter" required>
+                                            <input type="text" class="form-control" id="nip" name="nip" placeholder="Masukkan NIK"  title="NIP Harus terdiri dari angka dan maksimal 8 karakter" required>
                                         </div>
                                         <div class="mb-3">
                                             <label for="nama_pegawai" class="form-label">Nama Pegawai</label>
                                             <input type="text" class="form-control" id="nama_pegawai" name="nama_pegawai" placeholder="Masukkan Nama pegawai" required>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="departemen" class="from-label">Departemen</label>
+                                            <!-- <label for="departemen" class="from-label">Departemen</label> -->
                                             <!-- <select class="from-select" id="departemen" name="departemen"> -->
-                                            <select class="form-control selectpicker" id="departemen" name="departemen">
-                                                <option value="information_technology">Information Technology</option>
-                                                <option value="human_capital">Human Capital</option>
-                                                <option value="finance">Finance</option>
-                                                <option value="general_affair">General Affair</option>
-                                            </select>
+                                            <!-- <select class="form-control selectpicker" id="departemen" name="departemen">
+                                                <option value="Information Technology">Information Technology</option>
+                                                <option value="Human Capital">Human Capital</option>
+                                                <option value="Finance">Finance</option>
+                                                <option value="General Affair">General Affair</option>
+                                            </select> -->
                                         </div>
                                         <div class="mb-3">
-                                            <label for="file" class="from-label">Upload File</label>
+                                            <label for="file" class="from-label">Upload File Gelombang Otak</label>
                                             <input type="file" class="form-control" id="file" name="csv_file" accept=".csv" required>
                                             {% if response_message== 'CSV file uploaded successfully' %}
                                             <small style="color: blue;">
@@ -86,17 +127,7 @@
                                             <small style="color: red;">
                                                 {{response_message}}
                                             </small>
-                                            {% endif %}
-
-                                            <!-- Display result -->
-                                            {% if result %}
-                                            <div class="result-container">
-                                                <h4>Result:</h4>
-                                                <p>{{ result }}</p> <!-- Change this to display specific elements of 'result' as needed -->
-                                            
-                                                
-                                            </div>
-                                            {% endif %}
+                                            {% endif %}                                           
 
                                         </div>
                                         <div class="d-grid">
@@ -104,41 +135,59 @@
                                         </div>
                                     </form>
                                 </div>
+
+                            </div>
+                            {% if item %}
+                        
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 style="text-align: center;">Hasil</h4>
+                                <p style="text-align: justify">
+                                    Berdasarkan perhitungan uji konsentrasi karyawan yang bernama 
+                                    <strong>{{ item.nama_pegawai }}</strong> dengan NIK <strong>{{ item.nip }}</strong> dinyatakan 
+                                    <strong>{{ item.tingkat_konsentrasi }}</strong>.
+                                </p>
                             </div>
                         </div>
+                        {% endif %}
+                        </div>
 
-                        <div class="col-8">
+
+                                            
+                        <div class="col-8">                            
+
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="card-title text-center">History</h4>
+                                    <h4 style="text-align: center;">Histori</h4>
                                     <div class="row">
                                         <div class="table-responsive">
                                             <table id="datatable" class="table table-bordered data-table" style="width: 100%;">
                                                 <thead>
                                                     <tr>
                                                         <th>No</th>
-                                                        <th>NIP</th>
+                                                        <th>NIK</th>
                                                         <th>Nama Pegawai</th>
-                                                        <th>Departemen</th>
+                                                        <!-- <th>Departemen</th> -->
                                                         <th>Tingkat Konsentrasi</th>
                                                         <th>Tanggal</th>
-                                                        <th>Aksi</th>
+                                                        <!-- <th>Aksi</th> -->
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     {% for data in data %}
                                                     <tr>
-                                                        <td>{{loop.index}} </td>
+                                                        <td data-order="{{loop.index}}">{{ loop.index }}</td>
                                                         <td>{{ data.nip }}</td>
-                                                        <td>{{ data.nama_pegawai }}</td>
-                                                        <td>{{ data.departemen }}</td>
+                                                        <td>{{ data.nama_pegawai }}</td>                                                        
                                                         <td>{{ data.tingkat_konsentrasi }}</td>
                                                         <td>{{ data.tanggal }}</td>
-                                                        <td>
-                                                            <a href="#" data-toggle="modal" data-target="#modChart" data-uji="0.08185722, 0.09502756, 0.04491122, 0.06503574, 0.05635585, 0.03786717, 0.08185722, 0.09502756, 0.04491122" data-item="0.02269997, 0.01751783, 0.03700718, 0.04299396, 0.0460799, 0.03779127, 0.02269997, 0.01751783, 0.03700718">
+                                                        <!-- jika ingin menggunakan detail tampilan -->
+                                                        <!-- <td> -->
+                                                            <!-- <a href="#" data-toggle="modal" data-target="#modChart" data-uji="0.08185722, 0.09502756, 0.04491122, 0.06503574, 0.05635585, 0.03786717, 0.08185722, 0.09502756, 0.04491122" data-item="0.02269997, 0.01751783, 0.03700718, 0.04299396, 0.0460799, 0.03779127, 0.02269997, 0.01751783, 0.03700718"> -->
                                                                 <!-- <a href="#" data-toggle="modal" data-target="#modChart" data-uji="{{ x }}" data-item="{{ y}}"></a> -->
-                                                                <span class="ri-bar-chart-2-line"></span> {{ data.nama_pegawai }}
-                                                            </a>
+                                                                <!-- <span class="ri-bar-chart-2-line"></span>  -->
+                                                                <!-- {{ data.nama_pegawai }} -->
+                                                            <!-- </a> -->
                                                         </td>
                                                     </tr>
                                                     {% endfor %}
@@ -176,6 +225,7 @@
     </div>
     <!-- END layout-wrapper -->
 
+    {% if result %}                                 
     <div class="main-content">
         <div class="page-content">
             <div class="container-fluid">
@@ -184,10 +234,8 @@
                         <div class="card">                            
                             <div class="card-body">
                                 <div class="table-responsive">   
-                                    {% if result %}                                 
                                    {% include 'process.html'%}
 
-                                   {% endif %}
                                 </div>
                             </div>
                         </div>
@@ -196,6 +244,7 @@
             </div>
         </div>
     </div>
+    {% endif %}
     {% include 'detail.html' %}
 
    
