@@ -1,5 +1,6 @@
 {% set z= output_atribut|length %}
 {% set length_data_latih= data_latih|length %}
+
 <!-- DataTables -->
 <link href="https://apps.multi.co.id/myassetv3/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
 <link href="https://apps.multi.co.id/myassetv3/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
@@ -13,6 +14,23 @@
         margin-bottom: 30px; /* Atur jarak antara tabel */
     }
 </style>
+
+
+
+
+<!-- Include DataTables initialization script -->
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#data_lvq').DataTable({
+            stateSave: true,
+            searching: false,
+            buttons: [
+                // Define export options if needed
+            ],
+            // Additional configuration options if needed
+        });
+    });
+</script>
 
 <table id="data_mentah" class="table table-bordered" style="width: 100%;">
     <thead>
@@ -324,6 +342,20 @@
 </div>
 
 
+
+{% if final_weights %}
+<h3>Bobot Akhir</h3>
+<ul>
+    {% for weight in final_weights %}
+    <li>Bobot {{ loop.index }}: {{ weight }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+
+ 
+</table>
+
 <script type="text/javascript">
     $(document).ready(function() {
         $('#data_mentah').DataTable({
@@ -466,6 +498,6 @@
             ],
         });
     });
-
+    
 
 </script>

@@ -5,7 +5,7 @@ import pandas as pd
 # mengambil file 
 from preprocessing import persiapan_data,atribut_gelombang,gelombang_otak,data_latih
 from werkzeug.utils import secure_filename
-from lvq import LVQ, main
+from lvq import LVQ, main, train_lvq,calculate_accuracy
 from datetime import datetime
 from connection import Pengguna, get_nama_pegawai_from_database, db, GelombangOtak, app,db
 import csv
@@ -92,7 +92,9 @@ def upload_csv():
     output_atribut = None
     processed_data=None
     item=None
-    
+    lvq_logs=None
+    final_weights=None
+    accuracy=None
     data_gelombang_otak=GelombangOtak.query.all()  
     
             
@@ -102,12 +104,22 @@ def upload_csv():
         uploaded_file = request.files.get('csv_file')
         csvheader=csv.reader('csv_file')
         header= next(csvheader)
+        
+        # tambahan 
+        # weights, lvq_logs = train_lvq(x, y)
 
         if uploaded_file:
             tanggal = datetime.now().strftime("%Y-%m-%d %H:%M:%S")            
             _, data_file_path = process_uploaded_file(uploaded_file)
             uploaded_df = pd.read_csv(data_file_path, encoding='unicode_escape')
-
+            
+            # Load data latih untuk pelatihan LVQ
+            x_train = data_latih.iloc[:, :-1].values
+            y_train = data_latih['target'].values
+            
+            # Lakukan pelatihan LVQ
+            weights, lvq_logs = train_lvq(x_train, y_train)
+            
             if len(uploaded_df) < 80:
                 response_message = "Data kurang dari 80 "
 
@@ -137,9 +149,10 @@ def upload_csv():
                     'absG': processed_data['absG'],
                 }
 
-                data_uji = pd.DataFrame([data_uji])
-                # Proses data uji
-                weights=main()
+                data_uji = pd.DataFrame([data_uji])            
+               
+
+                
                 prediksi=ob.winner(weights,data_uji.values[0])
                 # Interpretasikan hasil prediksi
                 if prediksi == 1:
@@ -170,9 +183,13 @@ def upload_csv():
                 db.session.add(new_entry)
                 db.session.commit()
                 result = processed_data
-              
+              # Cetak bobot akhir
+                final_weights = weights
+                accuracy = calculate_accuracy(y_train, y_train) 
 
-            print(processed_data)
+                # Hitung hasil prediksi dengan bobot akhir
+               
+                            
     
     return render_template(
         'dashboard.html',
@@ -183,7 +200,10 @@ def upload_csv():
         output_atribut=output_atribut,        
         processed_data=processed_data,
         data_latih=data_latih,
-        item=item
+        item=item,
+        lvq_logs=lvq_logs,
+        final_weights=final_weights,
+        accuracy=accuracy
         )
 
 @app.route('/export_csv')
