@@ -6,12 +6,12 @@ from datetime import datetime
 app = Flask(__name__)
 app.secret_key = 'your_actual_secret_key_here'
 # Konfigurasi database URI
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://Aditya:Aditya@localhost/konsentrasi'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://Aditya:Aditya@localhost/konsentrasi'
 
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:password_baru@localhost/konsentrasi'
 
 # aktifkan sebelum deploy
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:root@172.17.0.2:3306/konsentrasi'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:root@172.17.0.2:3306/konsentrasi'
 db = SQLAlchemy(app)
 
 # Definisi model untuk tabel database (pengguna)
